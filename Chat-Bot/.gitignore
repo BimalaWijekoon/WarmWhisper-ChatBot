@@ -1,0 +1,4 @@
+node_modules
+.venv
+
+Model-tune/pretrained/model/model.safetensors
