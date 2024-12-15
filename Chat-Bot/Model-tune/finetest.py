@@ -19,7 +19,7 @@ emotion_labels = [
 ]
 
 # Function to predict emotions and display probabilities for a given text
-def predict_emotion(text, threshold=0.5):
+def predict_emotion(text):
     # Tokenize the input text
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=128)
     
@@ -30,19 +30,29 @@ def predict_emotion(text, threshold=0.5):
     # Apply sigmoid activation to get probabilities for each emotion
     probabilities = torch.sigmoid(outputs.logits).squeeze().cpu().numpy()
     
-    # Display emotions and their probabilities above the threshold
-    predicted_emotions = [(emotion_labels[i], prob) for i, prob in enumerate(probabilities) if prob > threshold]
+    # Return all emotions sorted by probability in descending order
+    predicted_emotions = sorted(
+        [(emotion_labels[i], prob) for i, prob in enumerate(probabilities)], 
+        key=lambda x: x[1], 
+        reverse=True
+    )
     
     return predicted_emotions
 
-# Example usage
-test_text = "I'm feeling very excited about the upcoming event!"
-predicted_emotions = predict_emotion(test_text)
+# Interactive loop for user input
+print("Emotion Prediction using Fine-tuned Model")
+print("Enter your text below, or type 'exit' to quit:")
 
-# Display the results
-if predicted_emotions:
-    print(f"Predicted emotions for '{test_text}':")
-    for emotion, prob in predicted_emotions:
+while True:
+    user_input = input("\nYour text: ")
+    if user_input.lower() == 'exit':
+        print("Exiting the emotion predictor. Goodbye!")
+        break
+    
+    # Predict emotions
+    predictions = predict_emotion(user_input)
+    
+    # Display predictions
+    print(f"\nPredicted emotions for your text:")
+    for emotion, prob in predictions:
         print(f"{emotion}: {prob:.4f}")
-else:
-    print(f"No significant emotions detected in '{test_text}'.")
