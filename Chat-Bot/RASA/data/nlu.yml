@@ -1,91 +1,208 @@
 version: "3.1"
 
 nlu:
-- intent: greet
-  examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+  # Intent: greet
+  - intent: greet
+    examples: |
+      - hey
+      - hello
+      - hi
+      - hello there
+      - good morning
+      - good evening
+      - moin
+      - hey there
+      - let's go
+      - hey dude
+      - goodmorning
+      - goodevening
+      - good afternoon
+      - what's up
+      - howdy
 
-- intent: goodbye
-  examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+  # Intent: goodbye
+  - intent: goodbye
+    examples: |
+      - cu
+      - good by
+      - cee you later
+      - good night
+      - bye
+      - goodbye
+      - have a nice day
+      - see you around
+      - bye bye
+      - see you later
+      - catch you later
+      - I'm off
+      - take care
+      - farewell
 
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+  # Intent: affirm
+  - intent: affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+      - absolutely
+      - sure
+      - that's right
 
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+  # Intent: deny
+  - intent: deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+      - nope
+      - not today
 
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+  # Intent: mood_great
+  - intent: mood_great
+    examples: |
+      - perfect
+      - great
+      - amazing
+      - feeling like a king
+      - wonderful
+      - I am feeling very good
+      - I am great
+      - I am amazing
+      - I am going to save the world
+      - super stoked
+      - extremely good
+      - so so perfect
+      - so good
+      - so perfect
+      - I feel fantastic
+      - I’m on top of the world
+      - I’m feeling incredible
 
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+  # Intent: mood_unhappy
+  - intent: mood_unhappy
+    examples: |
+      - my day was horrible
+      - I am sad
+      - I don't feel very well
+      - I am disappointed
+      - super sad
+      - I'm so sad
+      - sad
+      - very sad
+      - unhappy
+      - not good
+      - not very good
+      - extremely sad
+      - so sad
+      - I'm feeling low
+      - I'm down today
+      - today is just bad
+  
+  # Intent: mood_little_happy
+  - intent: mood_little_happy
+    examples: |
+      - I'm feeling okay
+      - I feel alright
+      - not too bad
+      - I'm a bit happy
+      - kind of happy
+      - somewhat happy
+      - I'm doing okay
+      - it's a decent day
+      - I feel a little better
+      - not bad at all
+      - I'm in a decent mood
+      - I'm somewhat pleased
+      - I'm slightly happy
+      - it's going alright
+      - feeling a bit better today
 
-- intent: bot_challenge
-  examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+
+  # Intent: bot_challenge
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?
+      - is there a real person here?
+
+  # Multiple intents combination
+  - intent: greet, mood_unhappy
+    examples: |
+      - Hi, I'm feeling sad today
+      - Hey, I'm not doing well
+      - Hello, I'm really down today
+      - Hi, I'm feeling a bit off
+      - Hey there, but I'm feeling really down
+      - Hello, I'm in a bad mood today
+      - Hi, I feel kinda sad right now
+
+  - intent: greet, mood_great
+    examples: |
+      - Hey, I'm feeling great today
+      - Hi, I'm in a good mood today
+      - Hello, I'm so happy right now
+      - Hey, I feel amazing today
+      - Hi, I’m feeling fantastic
+      - Hello, everything’s going awesome today
+
+  - intent: greet, goodbye
+    examples: |
+      - Hey, I need to leave now, goodbye
+      - Hello, I have to go, bye
+      - Hi, goodnight
+      - Hey, I’ll talk to you later, bye
+      - I have to go, see you later
+      - Time to go, take care
+
+  - intent: mood_unhappy, goodbye
+    examples: |
+      - I'm feeling so sad, I need to go
+      - I'm not feeling good, goodbye
+      - I'm really down, see you later
+      - I need to leave, I'm not feeling great
+      - I feel terrible, goodbye for now
+
+  - intent: greet, mood_unhappy, goodbye
+    examples: |
+      - Hi, I'm sad today. Goodbye.
+      - Hey, I'm not feeling well. See you.
+      - Hello, I'm feeling down. Bye!
+      - Hey, I feel really low today, bye for now
+      - Hi, it's been a tough day. Goodbye
+      - Hello, but I'm feeling a bit off. Bye!
+
+  # Other varied combinations for different message sequences
+  - intent: greet, mood_unhappy, affirm
+    examples: |
+      - Hey, I’m feeling kind of sad today, but yes, I’ll be okay
+      - Hello, I’m a bit down, but it’s alright
+      - Hi, I’m feeling sad, but I’m doing okay
+      - Hey, I’m not feeling well, but I’m sure things will get better
+
+  - intent: mood_great, greet, goodbye
+    examples: |
+      - I’m feeling amazing, hi there, but I need to go
+      - Great day, good morning, time to say goodbye
+      - Feeling fantastic, hey there, now I have to leave
+      - I’m in such a great mood, hello, but I’m off now
+
+  - intent: mood_unhappy, deny, goodbye
+    examples: |
+      - I’m really sad, no I don’t want to talk, goodbye
+      - Not in the mood to chat, goodbye, I’m feeling low
+      - I’m not feeling well, I don’t want to talk, goodbye
+
+  - intent: mood_great, affirm, goodbye
+    examples: |
+      - I’m feeling awesome, yes, I’ll talk to you later
+      - Things are great, of course, I’ll see you later
+      - Feeling great, absolutely, but it’s time to go

@@ -3,11 +3,11 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import os
 
 # Define the path for the fine-tuned model and tokenizer
-finetuned_model_dir = "./pretrained"  # Directory where the fine-tuned model is saved
+pretrained_model_dir = "./pretrained"  # Directory where the fine-tuned model is saved
 
 # Load the fine-tuned model and tokenizer from the saved directory
-tokenizer = AutoTokenizer.from_pretrained(os.path.join(finetuned_model_dir, "tokenizer"))
-model = AutoModelForSequenceClassification.from_pretrained(os.path.join(finetuned_model_dir, "model"))
+tokenizer = AutoTokenizer.from_pretrained(os.path.join(pretrained_model_dir, "tokenizer"))
+model = AutoModelForSequenceClassification.from_pretrained(os.path.join(pretrained_model_dir, "model"))
 
 # Define the emotion labels from the fine-tuned model
 emotion_labels = [

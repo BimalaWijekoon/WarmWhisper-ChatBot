@@ -2,12 +2,135 @@ version: "3.1"
 
 rules:
 
+# Say goodbye anytime the user says goodbye
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
   - action: utter_goodbye
 
-- rule: Say 'I am a bot' anytime the user challenges
+# Respond to user challenge about being a bot
+- rule: Respond to user challenge about being a bot
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+# Handle fallback with emotion detection
+- rule: Handle fallback with emotion detection
+  condition:
+    - active_loop: null
+  steps:
+  - intent: nlu_fallback
+  - action: action_detect_emotion
+  - action: action_listen  # Allows the bot to listen for the next input
+
+# Handle greeting, then emotion detection
+- rule: Greet before emotion detection
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: nlu_fallback
+  - slot_was_set:
+      - emotion_detected: True
+  - action: action_detect_emotion
+
+
+# Handle emotion detection, then greeting
+- rule: Emotion before greeting
+  steps:
+  - intent: nlu_fallback
+  - action: action_detect_emotion
+  - intent: greet
+  - action: utter_greet
+
+# Handle goodbye after greeting
+- rule: Greet and then goodbye
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: goodbye
+  - action: utter_goodbye
+
+# Handle greet -> emotion -> goodbye
+- rule: Greet, then emotion, then goodbye
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: nlu_fallback
+  - action: action_detect_emotion
+  - intent: goodbye
+  - action: utter_goodbye
+
+# Handle emotion -> greet -> goodbye
+- rule: Emotion, then greet, then goodbye
+  steps:
+  - intent: nlu_fallback
+  - action: action_detect_emotion
+  - intent: greet
+  - action: utter_greet
+  - intent: goodbye
+  - action: utter_goodbye
+
+# Handle emotion then goodbye
+- rule: Emotion, then goodbye
+  steps:
+  - intent: nlu_fallback
+  - action: action_detect_emotion
+  - intent: goodbye
+  - action: utter_goodbye
+
+# Handle greet, emotion, and goodbye together
+- rule: Greet, emotion, and goodbye together
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: nlu_fallback
+  - action: action_detect_emotion
+  - intent: goodbye
+  - action: utter_goodbye
+
+# Handle greet, mood_little_happy, and affirm together
+- rule: Greet, mood_little_happy, and affirm together
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_little_happy
+  - slot_was_set:
+      - emotion_detected: True
+  - action: action_detect_emotion
+  - intent: affirm
+  - action: utter_happy
+  
+
+# Handle mood_great, greet, and goodbye together
+- rule: Mood great, greet, and goodbye together
+  steps:
+  - intent: mood_great
+  - action: utter_happy
+  - intent: greet
+  - action: utter_greet
+  - intent: goodbye
+  - action: utter_goodbye
+
+# Handle mood_unhappy, deny, and goodbye together
+- rule: Mood unhappy, deny, and goodbye together
+  steps:
+  - intent: mood_unhappy
+  - slot_was_set:
+      - emotion_detected: False
+  - action: utter_cheer_up
+  - intent: deny
+  - action: utter_did_that_help
+  - intent: goodbye
+  - action: utter_goodbye
+
+
+# Handle mood_great, affirm, and goodbye together
+- rule: Mood great, affirm, and goodbye together
+  steps:
+  - intent: mood_great
+  - action: utter_happy
+  - intent: affirm
+  - action: utter_happy
+  - intent: goodbye
+  - action: utter_goodbye
+

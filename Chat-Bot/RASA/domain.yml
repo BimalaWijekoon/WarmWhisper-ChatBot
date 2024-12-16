@@ -8,26 +8,58 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - nlu_fallback  # Added for handling fallback situations
+  - greet, mood_unhappy
+  - greet, mood_great
+  - greet, goodbye
+  - mood_unhappy, goodbye
+  - greet, mood_unhappy, goodbye
+  - greet, mood_unhappy, affirm
+  - mood_great, greet, goodbye
+  - mood_unhappy, deny, goodbye
+  - mood_great, affirm, goodbye
+  - mood_little_happy
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
-
+    - text: "Hey! How are you?"
+  
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
+  
   utter_did_that_help:
-  - text: "Did that help you?"
-
+    - text: "Did that help you?"
+  
   utter_happy:
-  - text: "Great, carry on!"
-
+    - text: "Great, carry on!"
+  
   utter_goodbye:
-  - text: "Bye"
-
+    - text: "Bye"
+  
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am a bot, powered by Rasa."
+
+actions:
+  - action_detect_emotion
+
+slots:
+  fallback_triggered:
+    type: bool
+    initial_value: False
+    mappings:
+      - type: from_intent
+        intent: nlu_fallback
+        value: true
+
+  emotion_detected:
+    type: bool
+    initial_value: False
+    mappings:
+      - type: from_intent
+        intent: mood_unhappy
+        value: true
+
 
 session_config:
   session_expiration_time: 60
