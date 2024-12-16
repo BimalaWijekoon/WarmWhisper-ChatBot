@@ -5,34 +5,60 @@ intents:
   - goodbye
   - affirm
   - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - nlu_fallback  # Added for handling fallback situations
+  - greet, mood_unhappy
+  - greet, mood_great
+  - greet, goodbye
+  - mood_unhappy, goodbye
+  - greet, mood_unhappy, goodbye
+  - greet, mood_unhappy, affirm
+  - mood_great, greet, goodbye
+  - mood_unhappy, deny, goodbye
+  - mood_great, affirm, goodbye
+  - mood_little_happy
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_goodbye:
-  - text: "Bye! Take care!"
-
+    - text: "Hey! How are you?"
+  
+  utter_cheer_up:
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
+  
+  utter_did_that_help:
+    - text: "Did that help you?"
+  
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Great, carry on!"
+  
+  utter_goodbye:
+    - text: "Bye"
+  
+  utter_iamabot:
+    - text: "I am a bot, powered by Rasa."
 
 actions:
-  - action_detect_emotion  # Handles emotion detection dynamically
-  - action_cheer_up        # Provides encouragement dynamically
-  - action_check_if_helped # Checks if the user needs additional help
+  - action_detect_emotion
 
 slots:
+  fallback_triggered:
+    type: bool
+    initial_value: False
+    mappings:
+      - type: from_intent
+        intent: nlu_fallback
+        value: true
+
   emotion_detected:
     type: bool
-    influence_conversation: false
-    mappings:  # Optional in your case, unless you use it for automatic filling via actions
-      - type: from_text
-
-  context:
-    type: text
-    influence_conversation: false
+    initial_value: False
     mappings:
-      - type: from_text  # You can map the context from user messages, or leave it to actions
+      - type: from_intent
+        intent: mood_unhappy
+        value: true
 
 
 session_config:

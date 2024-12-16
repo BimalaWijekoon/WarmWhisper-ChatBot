@@ -49,11 +49,4 @@ rules:
   - intent: goodbye
   - action: utter_goodbye
 
-# Rule to handle a greeting followed by emotion detection
-# This ensures the bot greets the user first, detects their emotion on fallback, and then proceeds.
-- rule: Greet before emotion detection
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: nlu_fallback
-  - action: action_detect_emotion
+
