@@ -2,7 +2,8 @@ version: "3.1"
 
 stories:
 
-# happy path: greet -> mood_great
+# Story for the happy path where the user greets the bot and expresses a great mood.
+# The bot responds with a greeting and a happy acknowledgment.
 - story: happy path
   steps:
   - intent: greet
@@ -10,21 +11,22 @@ stories:
   - intent: mood_great
   - action: utter_happy
 
-# sad path 1: greet -> mood_unhappy -> cheer_up -> did_that_help -> affirm
+# Story for a sad path where the user greets the bot and expresses unhappiness.
+# The bot tries to cheer the user up and checks if it helped.
 - story: sad path 1
   steps:
   - intent: greet
   - action: utter_greet
   - intent: mood_unhappy
   - slot_was_set:
-    - emotion_detected: False
+    - emotion_detected: False  # Emotion detection indicates the user is unhappy.
   - action: utter_cheer_up
   - action: utter_did_that_help
   - intent: affirm
   - action: utter_happy
 
-
-# sad path 2: greet -> mood_little_happy -> cheer_up -> did_that_help -> deny
+# Story for another sad path where the user greets the bot and expresses mild unhappiness.
+# The bot tries to cheer the user up and handles denial by saying goodbye.
 - story: sad path 2
   steps:
   - intent: greet
@@ -35,18 +37,17 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-# greet, mood_unhappy, and emotion detection
+# Story where the user greets the bot, expresses unhappiness, and triggers emotion detection.
 - story: greet, mood_unhappy, and emotion detection
   steps:
   - intent: greet
   - action: utter_greet
   - intent: mood_unhappy
   - slot_was_set:
-    - emotion_detected: True
+    - emotion_detected: True  # Emotion detection indicates the user is unhappy.
   - action: action_detect_emotion
 
-
-# handle greeting then fallback (emotion detection)
+# Story where the bot greets the user, then handles a fallback by detecting emotion.
 - story: handle_greet_then_fallback
   steps:
   - intent: greet
@@ -54,7 +55,7 @@ stories:
   - intent: nlu_fallback
   - action: action_detect_emotion
 
-# handle fallback then greeting (emotion detection then greet)
+# Story where the bot handles a fallback first, detects the emotion, and then greets the user.
 - story: handle_fallback_then_greet
   steps:
   - intent: nlu_fallback
@@ -62,7 +63,7 @@ stories:
   - intent: greet
   - action: utter_greet
 
-# fallback and handle emotion after greet
+# Story where the bot greets the user, then detects emotion after a fallback.
 - story: fallback_after_greet
   steps:
   - intent: greet
@@ -70,7 +71,7 @@ stories:
   - intent: nlu_fallback
   - action: action_detect_emotion
 
-# greet, then emotion, then goodbye
+# Story where the user greets the bot, triggers emotion detection, and then says goodbye.
 - story: greet_then_emotion_then_goodbye
   steps:
   - intent: greet
@@ -80,7 +81,7 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-# greet then goodbye
+# Story where the user greets the bot and says goodbye directly.
 - story: greet_then_goodbye
   steps:
   - intent: greet
@@ -88,7 +89,7 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-# emotion, then greet, then goodbye
+# Story where the user triggers emotion detection, then greets the bot, and finally says goodbye.
 - story: emotion_then_greet_then_goodbye
   steps:
   - intent: nlu_fallback
@@ -98,7 +99,7 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-# emotion, then goodbye
+# Story where the user triggers emotion detection and then says goodbye.
 - story: emotion_then_goodbye
   steps:
   - intent: nlu_fallback
@@ -106,7 +107,7 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-# greet then emotion then goodbye
+# Story where the user greets the bot, triggers emotion detection, and then says goodbye.
 - story: greet_emotion_goodbye
   steps:
   - intent: greet
@@ -116,7 +117,7 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-# greet, mood_little_happy, and affirm together
+# Story where the user greets the bot, expresses mild happiness, and affirms it.
 - story: greet, mood_little_happy, and affirm together
   steps:
   - intent: greet
@@ -126,7 +127,7 @@ stories:
   - intent: affirm
   - action: utter_happy
 
-# mood_great, greet, and goodbye together
+# Story where the user expresses great mood, greets the bot, and says goodbye.
 - story: mood_great, greet, and goodbye together
   steps:
   - intent: mood_great
@@ -136,7 +137,7 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-# mood_unhappy, deny, and goodbye together
+# Story where the user expresses unhappiness, denies help, and says goodbye.
 - story: mood_unhappy, deny, and goodbye together
   steps:
   - intent: mood_unhappy
@@ -146,7 +147,7 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-# mood_great, affirm, and goodbye together
+# Story where the user expresses great mood, affirms it, and then says goodbye.
 - story: mood_great, affirm, and goodbye together
   steps:
   - intent: mood_great
