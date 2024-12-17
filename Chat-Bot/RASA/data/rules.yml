@@ -1,52 +1,93 @@
 version: "3.1"
 
 rules:
+  # Mandatory emotion detection rules
+  - rule: Handle fallback with emotion detection
+    condition:
+      - active_loop: null
+    steps:
+      - intent: nlu_fallback
+      - action: action_detect_emotion
+      - action: utter_emotions_empathy
+      - action: action_listen
 
-# Rule to handle goodbye anytime the user says goodbye
-# This ensures that the bot can always respond with a goodbye message, regardless of the context.
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - rule: Handle emotion detection and continue
+    steps:
+      - action: action_detect_emotion
+      - action: action_listen
 
-# Rule to handle user challenges about the bot's identity
-# When the user questions whether the bot is a bot, it responds with a predefined message.
-- rule: Respond to user challenge about being a bot
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  # Basic greeting rule
+  - rule: Respond to greeting
+    steps:
+      - intent: greet
+      - action: utter_greet
 
-# Rule to handle fallback cases with emotion detection
-# This is triggered when the NLU confidence is low or no intent is matched. 
-# The bot tries to detect the user's emotion and then waits for the next input.
-- rule: Handle fallback with emotion detection
-  condition:
-    # Ensure this only triggers when no form or loop is active
-    - active_loop: null
-  steps:
-  - intent: nlu_fallback
-  - action: action_detect_emotion
-  - action: action_listen  # Allow the bot to listen for the next input
+  # Goodbye rule
+  - rule: Say goodbye
+    steps:
+      - intent: bye
+      - action: utter_bye
 
-# Rule to handle emotion detection in isolation
-# This rule detects the user's emotion and then listens for further input.
-- rule: Handle emotion detection and continue
-  steps:
-  - action: action_detect_emotion
-  - action: action_listen  # Allows the bot to listen for the next user input
+  # Feelings inquiry rule
+  - rule: Respond to feelings question
+    steps:
+      - intent: feelings
+      - action: utter_feelings_reply
 
-# Rule to handle greetings after fallback
-# If the user greets the bot after a fallback, the bot responds with a greeting message.
-- rule: Handle greetings after fallback
-  steps:
-  - intent: greet
-  - action: utter_greet
+  # Affirmation rule
+  - rule: Handle affirmation
+    steps:
+      - intent: affirm
+      - action: utter_affirm_reply
 
-# Rule to handle goodbyes after fallback
-# If the user says goodbye after a fallback, the bot responds with a goodbye message.
-- rule: Handle goodbyes after fallback
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  # Denial rule
+  - rule: Handle denial
+    steps:
+      - intent: deny
+      - action: utter_deny_reply
 
+  # Emotions rule
+  - rule: Handle emotions
+    steps:
+      - intent: emotions
+      - action: action_detect_emotion
+      - action: utter_emotions_empathy
+      - action: action_listen
 
+  # Combined intent rules
+  - rule: Handle greet and bye combination
+    steps:
+      - intent: greet,bye
+      - action: utter_greet_bye
+
+  - rule: Handle bye and greet combination
+    steps:
+      - intent: bye,greet
+      - action: utter_bye_greet
+
+  - rule: Handle greet and feelings combination
+    steps:
+      - intent: greet,feeling
+      - action: utter_greet_feelings
+
+  - rule: Handle greet and emotions combination
+    steps:
+      - intent: greet,emotions
+      - action: utter_greet
+      - action: action_detect_emotion
+      - action: utter_emotions_empathy
+      - action: action_listen
+
+  - rule: Handle emotions and bye combination
+    steps:
+      - intent: emotions,bye
+      - action: action_detect_emotion
+      - action: utter_emotions_bye
+      - action: action_listen
+
+  - rule: Handle feelings and emotions combination
+    steps:
+      - intent: feelings,emotions
+      - action: action_detect_emotion
+      - action: utter_feelings_emotions
+      - action: action_listen

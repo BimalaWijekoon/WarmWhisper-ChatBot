@@ -89,41 +89,34 @@ const Chat = () => {
 const sendMessage = async () => {
   if (userInput.trim() === '') return;
 
-  // Display user's message
-  const newMessages = [...messages, { user: userInput }];
-  setMessages(newMessages);
-
   try {
-    // Send the message to the Rasa server with the user's first name
+    // Send the message to the Rasa server
     const response = await axios.post('http://localhost:5005/webhooks/rest/webhook', {
-      sender: userDetails.firstName,  // Pass the user's first name as the sender
+      sender: sessionId, // Use session ID as the sender
       message: userInput,
     });
 
+    // Display only the bot's responses
     const botResponses = response.data.map((msg) => msg.text).filter(Boolean);
 
     if (botResponses.length > 0) {
       setMessages((prevMessages) => [
         ...prevMessages,
-        ...botResponses.map((botResponse) => ({ bot: botResponse })),
-      ]);
-    } else {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { bot: 'Sorry, I didn’t understand that. Could you please rephrase?' },
+        { user: userInput }, // Show user message
+        ...botResponses.map((botResponse) => ({ bot: botResponse })), // Show bot responses
       ]);
     }
   } catch (error) {
     console.error('Error sending message:', error);
     setMessages((prevMessages) => [
       ...prevMessages,
+      { user: userInput }, // Show user message
       { bot: 'Sorry, something went wrong. Please try again later.' },
     ]);
   }
 
-  setUserInput('');
+  setUserInput(''); // Clear input field
 };
-
 
   // Function to handle new chat creation
   const handleNewChat = async () => {

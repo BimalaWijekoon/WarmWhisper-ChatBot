@@ -1,208 +1,168 @@
 version: "3.1"
-
 nlu:
-  # Intent: greet
-  - intent: greet
-    examples: |
-      - hey
-      - hello
-      - hi
-      - hello there
-      - good morning
-      - good evening
-      - moin
-      - hey there
-      - let's go
-      - hey dude
-      - goodmorning
-      - goodevening
-      - good afternoon
-      - what's up
-      - howdy
+- intent: greet
+  examples: |
+    - Hey
+    - Hello
+    - Hi
+    - Good morning
+    - Good afternoon
+    - Good evening
+    - Hey there
+    - Hi there
+    - Hello there
+    - Greetings
 
-  # Intent: goodbye
-  - intent: goodbye
-    examples: |
-      - cu
-      - good by
-      - cee you later
-      - good night
-      - bye
-      - goodbye
-      - have a nice day
-      - see you around
-      - bye bye
-      - see you later
-      - catch you later
-      - I'm off
-      - take care
-      - farewell
+- intent: bye
+  examples: |
+    - Bye
+    - Goodbye
+    - See you later
+    - Talk to you later
+    - See ya
+    - Farewell
+    - Catch you later
+    - Have a good one
+    - Take care
+    - Good night
 
-  # Intent: affirm
-  - intent: affirm
-    examples: |
-      - yes
-      - y
-      - indeed
-      - of course
-      - that sounds good
-      - correct
-      - absolutely
-      - sure
-      - that's right
+- intent: feelings
+  examples: |
+    - How are you feeling today?
+    - How's your day going?
+    - What's your mood like?
+    - How are you feeling right now?
+    - How do you feel?
+    - Describe your feelings.
+    - Are you feeling alright?
+    - What's up?
+    - How's it going?
+    - Tell me about your feelings.
 
-  # Intent: deny
-  - intent: deny
-    examples: |
-      - no
-      - n
-      - never
-      - I don't think so
-      - don't like that
-      - no way
-      - not really
-      - nope
-      - not today
+- intent: affirm
+  examples: |
+    - Yes
+    - Yeah
+    - Yup
+    - Okay
+    - Sure
+    - Alright
+    - Definitely
+    - Absolutely
+    - Of course
+    - Right
 
-  # Intent: mood_great
-  - intent: mood_great
-    examples: |
-      - perfect
-      - great
-      - amazing
-      - feeling like a king
-      - wonderful
-      - I am feeling very good
-      - I am great
-      - I am amazing
-      - I am going to save the world
-      - super stoked
-      - extremely good
-      - so so perfect
-      - so good
-      - so perfect
-      - I feel fantastic
-      - I’m on top of the world
-      - I’m feeling incredible
+- intent: deny
+  examples: |
+    - No
+    - Nope
+    - Nah
+    - Not really
+    - I don't think so
+    - No way
+    - Never
+    - Absolutely not
+    - Definitely not
+    - Not at all
 
-  # Intent: mood_unhappy
-  - intent: mood_unhappy
-    examples: |
-      - my day was horrible
-      - I am sad
-      - I don't feel very well
-      - I am disappointed
-      - super sad
-      - I'm so sad
-      - sad
-      - very sad
-      - unhappy
-      - not good
-      - not very good
-      - extremely sad
-      - so sad
-      - I'm feeling low
-      - I'm down today
-      - today is just bad
-  
-  # Intent: mood_little_happy
-  - intent: mood_little_happy
-    examples: |
-      - I'm feeling okay
-      - I feel alright
-      - not too bad
-      - I'm a bit happy
-      - kind of happy
-      - somewhat happy
-      - I'm doing okay
-      - it's a decent day
-      - I feel a little better
-      - not bad at all
-      - I'm in a decent mood
-      - I'm somewhat pleased
-      - I'm slightly happy
-      - it's going alright
-      - feeling a bit better today
+- intent: emotions
+  examples: |
+    - I'm feeling happy.
+    - I'm incredibly joyful and excited!
+    - I feel a mix of sadness and anger.
+    - Overwhelmed with happiness and gratitude.
+    - Feeling a bit down today.
+    - I'm experiencing intense fear and anxiety.
+    - Today, I feel calm and peaceful.
+    - I'm both excited and nervous about the upcoming event.
+    - Feeling lonely and isolated.
+    - A surge of joy and relief washed over me.
+    - I'm feeling content and satisfied with my life.
+    - I'm experiencing a range of emotions—joy, fear, and hope.
+    - I feel a deep sense of frustration and disappointment.
+    - Feeling completely drained and exhausted.
+    - I'm experiencing a wave of euphoria.
+    - I'm feeling melancholic and nostalgic.
+    - I'm overwhelmed by a mix of emotions – excitement, anxiety, and anticipation.
+    - I feel a sense of accomplishment and pride.
+    - I'm feeling restless and irritable.
+    - I'm experiencing a profound sense of peace and serenity.
 
 
-  # Intent: bot_challenge
-  - intent: bot_challenge
-    examples: |
-      - are you a bot?
-      - are you a human?
-      - am I talking to a bot?
-      - am I talking to a human?
-      - is there a real person here?
+- intent: greet,bye
+  examples: |
+    - Hi, bye
+    - Hello, goodbye
+    - Hey, see you later
+    - Good morning, bye
+    - Good afternoon, see you later
+    - Good evening, farewell
+    - Hi there, bye
+    - Hello there, see ya
+    - Greetings, take care
+    - Hey, have a good one
 
-  # Multiple intents combination
-  - intent: greet, mood_unhappy
-    examples: |
-      - Hi, I'm feeling sad today
-      - Hey, I'm not doing well
-      - Hello, I'm really down today
-      - Hi, I'm feeling a bit off
-      - Hey there, but I'm feeling really down
-      - Hello, I'm in a bad mood today
-      - Hi, I feel kinda sad right now
+- intent: bye,greet
+  examples: |
+    - Bye, hi
+    - Goodbye, hello
+    - See you later, hey
+    - Talk to you later, hi there
+    - See ya, greetings
+    - Farewell, hello there
+    - Catch you later, hey
+    - Have a good one, hi
+    - Take care, hello
+    - Good night, good morning
 
-  - intent: greet, mood_great
-    examples: |
-      - Hey, I'm feeling great today
-      - Hi, I'm in a good mood today
-      - Hello, I'm so happy right now
-      - Hey, I feel amazing today
-      - Hi, I’m feeling fantastic
-      - Hello, everything’s going awesome today
+- intent: greet,feelings
+  examples: |
+    - Hi, how are you feeling?
+    - Hello, how's your day going?
+    - Hey, what's your mood like?
+    - Good morning, how are you feeling right now?
+    - Good afternoon, how do you feel?
+    - Good evening, describe your feelings.
+    - Hey there, are you feeling alright?
+    - Hi there, what's up?
+    - Hello there, how's it going?
+    - Greetings, tell me about your feelings.
 
-  - intent: greet, goodbye
-    examples: |
-      - Hey, I need to leave now, goodbye
-      - Hello, I have to go, bye
-      - Hi, goodnight
-      - Hey, I’ll talk to you later, bye
-      - I have to go, see you later
-      - Time to go, take care
+- intent: greet,emotions
+  examples: |
+    - Hi, I'm feeling happy.
+    - Hello, I'm incredibly joyful and excited!
+    - Hey, I feel a mix of sadness and anger.
+    - Good morning, I'm overwhelmed with happiness and gratitude.
+    - Good afternoon, feeling a bit down today.
+    - Good evening, I'm experiencing intense fear and anxiety.
+    - Hey there, today, I feel calm and peaceful.
+    - Hi there, I'm both excited and nervous about the upcoming event.
+    - Hello there, feeling lonely and isolated.
+    - Greetings, a surge of joy and relief washed over me.
 
-  - intent: mood_unhappy, goodbye
-    examples: |
-      - I'm feeling so sad, I need to go
-      - I'm not feeling good, goodbye
-      - I'm really down, see you later
-      - I need to leave, I'm not feeling great
-      - I feel terrible, goodbye for now
+- intent: emotions,bye
+  examples: |
+    - I'm feeling happy, bye
+    - I'm incredibly joyful and excited!, goodbye
+    - I feel a mix of sadness and anger, see you later
+    - Overwhelmed with happiness and gratitude, talk to you later
+    - Feeling a bit down today, see ya
+    - I'm experiencing intense fear and anxiety, farewell
+    - Today, I feel calm and peaceful, catch you later
+    - I'm both excited and nervous about the upcoming event, have a good one
+    - Feeling lonely and isolated, take care
+    - A surge of joy and relief washed over me, good night
 
-  - intent: greet, mood_unhappy, goodbye
-    examples: |
-      - Hi, I'm sad today. Goodbye.
-      - Hey, I'm not feeling well. See you.
-      - Hello, I'm feeling down. Bye!
-      - Hey, I feel really low today, bye for now
-      - Hi, it's been a tough day. Goodbye
-      - Hello, but I'm feeling a bit off. Bye!
-
-  # Other varied combinations for different message sequences
-  - intent: greet, mood_unhappy, affirm
-    examples: |
-      - Hey, I’m feeling kind of sad today, but yes, I’ll be okay
-      - Hello, I’m a bit down, but it’s alright
-      - Hi, I’m feeling sad, but I’m doing okay
-      - Hey, I’m not feeling well, but I’m sure things will get better
-
-  - intent: mood_great, greet, goodbye
-    examples: |
-      - I’m feeling amazing, hi there, but I need to go
-      - Great day, good morning, time to say goodbye
-      - Feeling fantastic, hey there, now I have to leave
-      - I’m in such a great mood, hello, but I’m off now
-
-  - intent: mood_unhappy, deny, goodbye
-    examples: |
-      - I’m really sad, no I don’t want to talk, goodbye
-      - Not in the mood to chat, goodbye, I’m feeling low
-      - I’m not feeling well, I don’t want to talk, goodbye
-
-  - intent: mood_great, affirm, goodbye
-    examples: |
-      - I’m feeling awesome, yes, I’ll talk to you later
-      - Things are great, of course, I’ll see you later
-      - Feeling great, absolutely, but it’s time to go
+- intent: feelings,emotions
+  examples: |
+    - How are you feeling?, I'm happy
+    - How's your day going?, I feel excited and nervous
+    - What's your mood like?, I'm feeling a bit down
+    - How are you feeling right now?, I'm experiencing intense joy
+    - How do you feel?, I feel a mix of sadness and anger
+    - Describe your feelings., I'm overwhelmed with gratitude
+    - Are you feeling alright?, I feel calm and peaceful
+    - What's up?, Feeling lonely and isolated
+    - How's it going?, I'm experiencing a wave of euphoria
+    - Tell me about your feelings., I feel a sense of accomplishment

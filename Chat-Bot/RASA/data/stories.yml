@@ -1,158 +1,168 @@
 version: "3.1"
 
 stories:
+  # Single Intent Stories
+  - story: simple_greeting
+    steps:
+    - intent: greet
+    - action: utter_greet
 
-# Story for the happy path where the user greets the bot and expresses a great mood.
-# The bot responds with a greeting and a happy acknowledgment.
-- story: happy path
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
+  - story: simple_goodbye
+    steps:
+    - intent: bye
+    - action: utter_bye
 
-# Story for a sad path where the user greets the bot and expresses unhappiness.
-# The bot tries to cheer the user up and checks if it helped.
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - slot_was_set:
-    - emotion_detected: False  # Emotion detection indicates the user is unhappy.
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+  - story: simple_feelings
+    steps:
+    - intent: feelings
+    - action: utter_feelings_reply
 
-# Story for another sad path where the user greets the bot and expresses mild unhappiness.
-# The bot tries to cheer the user up and handles denial by saying goodbye.
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
+  - story: simple_affirmation
+    steps:
+    - intent: affirm
+    - action: utter_affirm_reply
 
-# Story where the user greets the bot, expresses unhappiness, and triggers emotion detection.
-- story: greet, mood_unhappy, and emotion detection
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - slot_was_set:
-    - emotion_detected: True  # Emotion detection indicates the user is unhappy.
-  - action: action_detect_emotion
+  - story: simple_denial
+    steps:
+    - intent: deny
+    - action: utter_deny_reply
 
-# Story where the bot greets the user, then handles a fallback by detecting emotion.
-- story: handle_greet_then_fallback
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: nlu_fallback
-  - action: action_detect_emotion
+  - story: simple_emotions
+    steps:
+    - intent: emotions
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
 
-# Story where the bot handles a fallback first, detects the emotion, and then greets the user.
-- story: handle_fallback_then_greet
-  steps:
-  - intent: nlu_fallback
-  - action: action_detect_emotion
-  - intent: greet
-  - action: utter_greet
+  # Multiple Intent Stories
+  - story: greet_and_bye
+    steps:
+    - intent: greet,bye
+    - action: utter_greet_bye
 
-# Story where the bot greets the user, then detects emotion after a fallback.
-- story: fallback_after_greet
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: nlu_fallback
-  - action: action_detect_emotion
+  - story: bye_and_greet
+    steps:
+    - intent: bye,greet
+    - action: utter_bye_greet
 
-# Story where the user greets the bot, triggers emotion detection, and then says goodbye.
-- story: greet_then_emotion_then_goodbye
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: nlu_fallback
-  - action: action_detect_emotion
-  - intent: goodbye
-  - action: utter_goodbye
+  - story: greet_and_feelings
+    steps:
+    - intent: greet,feeling
+    - action: utter_greet_feelings
 
-# Story where the user greets the bot and says goodbye directly.
-- story: greet_then_goodbye
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: goodbye
-  - action: utter_goodbye
+  - story: greet_and_emotions
+    steps:
+    - intent: greet,emotions
+    - action: utter_greet
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
 
-# Story where the user triggers emotion detection, then greets the bot, and finally says goodbye.
-- story: emotion_then_greet_then_goodbye
-  steps:
-  - intent: nlu_fallback
-  - action: action_detect_emotion
-  - intent: greet
-  - action: utter_greet
-  - intent: goodbye
-  - action: utter_goodbye
+  - story: emotions_and_bye
+    steps:
+    - intent: emotions,bye
+    - action: action_detect_emotion
+    - action: utter_emotions_bye
+    - action: action_listen
 
-# Story where the user triggers emotion detection and then says goodbye.
-- story: emotion_then_goodbye
-  steps:
-  - intent: nlu_fallback
-  - action: action_detect_emotion
-  - intent: goodbye
-  - action: utter_goodbye
+  - story: feelings_and_emotions
+    steps:
+    - intent: feelings,emotions
+    - action: action_detect_emotion
+    - action: utter_feelings_emotions
+    - action: action_listen
 
-# Story where the user greets the bot, triggers emotion detection, and then says goodbye.
-- story: greet_emotion_goodbye
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: nlu_fallback
-  - action: action_detect_emotion
-  - intent: goodbye
-  - action: utter_goodbye
+  # Fallback Stories
+  - story: fallback_emotion_detection
+    steps:
+    - intent: nlu_fallback
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
 
-# Story where the user greets the bot, expresses mild happiness, and affirms it.
-- story: greet, mood_little_happy, and affirm together
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_little_happy
-  - action: action_detect_emotion
-  - intent: affirm
-  - action: utter_happy
+  - story: greet_emotion_bye
+    steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: nlu_fallback
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
+    - intent: bye
+    - action: utter_bye
 
-# Story where the user expresses great mood, greets the bot, and says goodbye.
-- story: mood_great, greet, and goodbye together
-  steps:
-  - intent: mood_great
-  - action: utter_happy
-  - intent: greet
-  - action: utter_greet
-  - intent: goodbye
-  - action: utter_goodbye
+  # New Extended Stories
+  - story: greeting_affirmation_goodbye
+    steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: affirm
+    - action: utter_affirm_reply
+    - intent: bye
+    - action: utter_bye
 
-# Story where the user expresses unhappiness, denies help, and says goodbye.
-- story: mood_unhappy, deny, and goodbye together
-  steps:
-  - intent: mood_unhappy
-  - action: action_detect_emotion
-  - intent: deny
-  - action: utter_did_that_help
-  - intent: goodbye
-  - action: utter_goodbye
+  - story: feelings_denial_emotions
+    steps:
+    - intent: feelings
+    - action: utter_feelings_reply
+    - intent: deny
+    - action: utter_deny_reply
+    - intent: emotions
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
 
-# Story where the user expresses great mood, affirms it, and then says goodbye.
-- story: mood_great, affirm, and goodbye together
-  steps:
-  - intent: mood_great
-  - action: utter_happy
-  - intent: affirm
-  - action: utter_happy
-  - intent: goodbye
-  - action: utter_goodbye
+  - story: greet_emotions_fallback
+    steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: emotions
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
+    - intent: nlu_fallback
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
+
+  - story: multiple_greetings
+    steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: greet
+    - action: utter_greet
+
+  - story: greeting_feelings_bye
+    steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: feelings
+    - action: utter_feelings_reply
+    - intent: bye
+    - action: utter_bye
+
+  - story: emotions_with_fallback
+    steps:
+    - intent: emotions
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
+    - intent: nlu_fallback
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
+
+  - story: full_interaction_flow
+    steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: feelings
+    - action: utter_feelings_reply
+    - intent: affirm
+    - action: utter_affirm_reply
+    - intent: emotions
+    - action: action_detect_emotion
+    - action: utter_emotions_empathy
+    - action: action_listen
+    - intent: bye
+    - action: utter_bye

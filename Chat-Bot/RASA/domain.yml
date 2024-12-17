@@ -2,43 +2,78 @@ version: "3.1"
 
 intents:
   - greet
-  - goodbye
-  - affirm
+  - bye
+  - feelings
   - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+  - affirm
+  - emotions
+  - greet,bye
   - nlu_fallback  # Added for handling fallback situations
-  - greet, mood_unhappy
-  - greet, mood_great
-  - greet, goodbye
-  - mood_unhappy, goodbye
-  - greet, mood_unhappy, goodbye
-  - greet, mood_unhappy, affirm
-  - mood_great, greet, goodbye
-  - mood_unhappy, deny, goodbye
-  - mood_great, affirm, goodbye
-  - mood_little_happy
+  - bye,greet
+  - greet,feeling
+  - greet,emotions
+  - emotions,bye
+  - feelings,emotions
 
 responses:
   utter_greet:
-    - text: "Hey! How are you?"
-  
-  utter_cheer_up:
-    - text: "Here is something to cheer you up:"
-      image: "https://i.imgur.com/nGF1K8f.jpg"
-  
-  utter_did_that_help:
-    - text: "Did that help you?"
-  
-  utter_happy:
-    - text: "Great, carry on!"
-  
-  utter_goodbye:
-    - text: "Bye"
-  
-  utter_iamabot:
-    - text: "I am a bot, powered by Rasa."
+    - text: "Hello! How can I help you today?"
+    - text: "Hi there! Nice to meet you."
+    - text: "Hey! Welcome back."
+
+  utter_bye:
+    - text: "Goodbye! Have a great day."
+    - text: "See you later! Take care."
+    - text: "Bye! Looking forward to our next chat."
+
+  utter_feelings_reply:
+    - text: "I'm doing well, thanks for asking! How about you?"
+    - text: "I'm having a good day. Hope you are too!"
+    - text: "Thanks for asking - I'm functioning perfectly."
+
+  utter_affirm_reply:
+    - text: "Great! Let's proceed."
+    - text: "Perfect, I understand."
+    - text: "Excellent, we're on the same page."
+
+  utter_deny_reply:
+    - text: "No problem, let me know what you need instead."
+    - text: "That's fine, we can try something else."
+    - text: "Okay, let's look at other options."
+
+  utter_emotions_empathy:
+    - text: "I understand how you're feeling. It's completely normal to experience {emotion}."
+    - text: "Thank you for sharing your emotions with me. It's important to acknowledge how we feel."
+    - text: "I hear you. {emotion} can be quite intense."
+
+  utter_greet_bye:
+    - text: "Hi there! Oh, are you leaving already? Take care!"
+    - text: "Hello and goodbye! Have a wonderful day ahead."
+    - text: "Hi! Sorry to see you go so soon. Bye!"
+
+  utter_bye_greet:
+    - text: "Goodbye and hello again! Make up your mind! 😊"
+    - text: "Leaving and coming back? I'm happy either way!"
+    - text: "Both bye and hi? I'm here whenever you need me."
+
+  utter_greet_feelings:
+    - text: "Hello! I'm glad you're asking how I'm feeling. I'm doing great!"
+    - text: "Hi there! Thanks for your concern about my feelings. I'm functioning well!"
+    - text: "Hey! How thoughtful of you to ask about my feelings. I'm doing fine!"
+
+  utter_greet_emotions:
+    - text: "Hi! I appreciate you sharing your emotions with me. Would you like to talk more about it?"
+    - text: "Hello! Thank you for opening up about how you're feeling. I'm here to listen."
+    - text: "Hey! It's brave of you to express your emotions. Let's talk about it."
+
+  utter_emotions_bye:
+    - text: "I understand you're feeling {emotion}. Hope you feel better!"
+    - text: "I acknowledge your feelings. Take good care of yourself!"
+
+  utter_feelings_emotions:
+    - text: "While I'm doing fine, I notice you're feeling {emotion}. Would you like to talk about it?"
+    - text: "I'm well, thank you. I see you're experiencing some emotions - I'm here to listen."
+    - text: "Thanks for asking about me. More importantly, how are you coping with these feelings?"
 
 actions:
   - action_detect_emotion
@@ -52,13 +87,42 @@ slots:
         intent: nlu_fallback
         value: true
 
-  emotion_detected:
-    type: bool
-    initial_value: False
+  emotion:
+    type: text
+    influence_conversation: true
     mappings:
-      - type: from_intent
-        intent: mood_unhappy
-        value: true
+      - type: custom
+        conditions:
+          - active_loop: null
+        accepted_values:
+          - admiration
+          - amusement
+          - anger
+          - annoyance
+          - approval
+          - caring
+          - confusion
+          - curiosity
+          - desire
+          - disappointment
+          - disapproval
+          - disgust
+          - embarrassment
+          - excitement
+          - fear
+          - gratitude
+          - grief
+          - joy
+          - love
+          - nervousness
+          - optimism
+          - pride
+          - realization
+          - relief
+          - remorse
+          - sadness
+          - surprise
+          - neutral
 
 
 session_config:
