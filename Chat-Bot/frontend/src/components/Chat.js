@@ -1,5 +1,3 @@
-// src/components/Chat.js
-
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Input } from 'antd';
@@ -12,6 +10,7 @@ const Chat = () => {
   const [userInput, setUserInput] = useState('');
   const [userDetails, setUserDetails] = useState(null); // Store user details fetched from backend
   const [sessionId, setSessionId] = useState(null);
+  const [isTyping, setIsTyping] = useState(false); // New state for typing indicator
   const messagesEndRef = useRef(null);
 
   // Function to generate a unique session ID
@@ -85,38 +84,69 @@ const Chat = () => {
     localStorage.setItem('messages', JSON.stringify(messages)); // Save messages to localStorage whenever they change
   }, [messages]);
 
-// Function to handle sending messages
-const sendMessage = async () => {
-  if (userInput.trim() === '') return;
-
-  try {
-    // Send the message to the Rasa server
-    const response = await axios.post('http://localhost:5005/webhooks/rest/webhook', {
-      sender: sessionId, // Use session ID as the sender
-      message: userInput,
+  // New function for typing indicator
+  const showTypingIndicator = () => {
+    setIsTyping(true);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 2000); // Minimum 2 seconds typing animation
     });
+  };
 
-    // Display only the bot's responses
-    const botResponses = response.data.map((msg) => msg.text).filter(Boolean);
-
-    if (botResponses.length > 0) {
+  // Updated sendMessage function
+  const sendMessage = async () => {
+    if (!userDetails) {
+      console.warn('User details not loaded yet.');
+      return; // Optionally handle this case differently
+    }
+    if (userInput.trim() === '') return;
+  
+    // Immediately show user message and clear input
+    const userMessage = userInput;
+    setMessages((prevMessages) => [...prevMessages, { user: userMessage }]);
+    setUserInput('');
+  
+    try {
+      // Show typing indicator
+      setIsTyping(true);
+      
+      // Create a promise that resolves after minimum 2 seconds
+      const typingPromise = showTypingIndicator();
+      
+      // Send the message to the Rasa server with first name
+      const rasaPromise = axios.post('http://localhost:5005/webhooks/rest/webhook', {
+        sender: sessionId,
+        message: userMessage,
+        metadata: {  // Wrap first_name in metadata object
+          first_name: userDetails ? userDetails.firstName : 'User'
+        }
+      });
+  
+      // Wait for both minimum typing time and Rasa response
+      const [response] = await Promise.all([rasaPromise, typingPromise]);
+  
+      // Hide typing indicator
+      setIsTyping(false);
+  
+      // Display bot responses
+      const botResponses = response.data.map((msg) => msg.text).filter(Boolean);
+  
+      if (botResponses.length > 0) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          ...botResponses.map((botResponse) => ({ bot: botResponse })),
+        ]);
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setIsTyping(false);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { user: userInput }, // Show user message
-        ...botResponses.map((botResponse) => ({ bot: botResponse })), // Show bot responses
+        { bot: 'Sorry, something went wrong. Please try again later.' },
       ]);
     }
-  } catch (error) {
-    console.error('Error sending message:', error);
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { user: userInput }, // Show user message
-      { bot: 'Sorry, something went wrong. Please try again later.' },
-    ]);
-  }
-
-  setUserInput(''); // Clear input field
-};
+  };
 
   // Function to handle new chat creation
   const handleNewChat = async () => {
@@ -190,7 +220,7 @@ const sendMessage = async () => {
         loadChatHistory={loadChatHistory}
         setSessionId={setSessionId}
         setMessages={setMessages}
-        sendBotMessage={sendBotMessage}  // Pass sendBotMessage as a prop
+        sendBotMessage={sendBotMessage}
       />
       <div className="chat-page">
         <div className="chat-container">
@@ -202,7 +232,7 @@ const sendMessage = async () => {
                     <div className="user-avatar-small">
                       {userDetails && userDetails.profilePicture ? (
                         <img
-                          src={userDetails.profilePicture} // Directly use the fetched data
+                          src={userDetails.profilePicture}
                           alt="User Avatar"
                           className="user-avatar-image"
                         />
@@ -222,6 +252,20 @@ const sendMessage = async () => {
                 )}
               </div>
             ))}
+            {isTyping && (
+              <div className="message-bubble bubble-left">
+                <div className="bot-typing">
+                  <div className="bot-avatar-small">
+                    <img src={BotAvatar} alt="Bot Avatar" className="bot-avatar-image" />
+                  </div>
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
           <div className="input-section">

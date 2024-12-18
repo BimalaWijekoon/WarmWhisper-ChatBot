@@ -8,7 +8,7 @@ rules:
     steps:
       - intent: nlu_fallback
       - action: action_detect_emotion
-      - action: utter_emotions_empathy
+      - action: action_respond_to_emotion
       - action: action_listen
 
   - rule: Handle emotion detection and continue
@@ -20,6 +20,7 @@ rules:
   - rule: Respond to greeting
     steps:
       - intent: greet
+      - action: action_process_message
       - action: utter_greet
 
   # Goodbye rule
@@ -51,7 +52,7 @@ rules:
     steps:
       - intent: emotions
       - action: action_detect_emotion
-      - action: utter_emotions_empathy
+      - action: action_respond_to_emotion
       - action: action_listen
 
   # Combined intent rules
@@ -75,7 +76,7 @@ rules:
       - intent: greet,emotions
       - action: utter_greet
       - action: action_detect_emotion
-      - action: utter_emotions_empathy
+      - action: action_respond_to_emotion
       - action: action_listen
 
   - rule: Handle emotions and bye combination

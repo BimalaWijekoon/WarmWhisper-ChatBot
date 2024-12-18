@@ -5,6 +5,7 @@ stories:
   - story: simple_greeting
     steps:
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
 
   - story: simple_goodbye
@@ -31,7 +32,7 @@ stories:
     steps:
     - intent: emotions
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
 
   # Multiple Intent Stories
@@ -55,7 +56,7 @@ stories:
     - intent: greet,emotions
     - action: utter_greet
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
 
   - story: emotions_and_bye
@@ -77,16 +78,17 @@ stories:
     steps:
     - intent: nlu_fallback
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
 
   - story: greet_emotion_bye
     steps:
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
     - intent: nlu_fallback
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
     - intent: bye
     - action: utter_bye
@@ -95,6 +97,7 @@ stories:
   - story: greeting_affirmation_goodbye
     steps:
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
     - intent: affirm
     - action: utter_affirm_reply
@@ -109,32 +112,36 @@ stories:
     - action: utter_deny_reply
     - intent: emotions
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
 
   - story: greet_emotions_fallback
     steps:
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
     - intent: emotions
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
     - intent: nlu_fallback
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
 
   - story: multiple_greetings
     steps:
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
 
   - story: greeting_feelings_bye
     steps:
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
     - intent: feelings
     - action: utter_feelings_reply
@@ -145,16 +152,17 @@ stories:
     steps:
     - intent: emotions
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
     - intent: nlu_fallback
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
 
   - story: full_interaction_flow
     steps:
     - intent: greet
+    - action: action_process_message
     - action: utter_greet
     - intent: feelings
     - action: utter_feelings_reply
@@ -162,7 +170,7 @@ stories:
     - action: utter_affirm_reply
     - intent: emotions
     - action: action_detect_emotion
-    - action: utter_emotions_empathy
+    - action: action_respond_to_emotion
     - action: action_listen
     - intent: bye
     - action: utter_bye

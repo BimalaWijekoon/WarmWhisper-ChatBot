@@ -35,17 +35,41 @@ body {
 }
 
 .chat-window {
-  background-color: rgba(248, 248, 248, 0.25); /* Transparent purple */
+  background-color: rgba(248, 248, 248, 0.737); /* Transparent purple */
   flex: 1;
   width: 100%;
   max-width: 400px;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* Allow scrolling for chat messages */
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px; /* Give space for input field */
+  margin-bottom: 10px;
+  
+  /* Modern Scrollbar Styles */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(12, 12, 12, 0.5) transparent;
+}
+
+/* Webkit browsers scrollbar styles */
+.chat-window::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-window::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background-color:  rgba(12, 12, 12, 0.5) transparent;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.chat-window::-webkit-scrollbar-thumb:hover {
+  background-color:  rgba(12, 12, 12, 0.5) transparent;
 }
 
 .message-bubble {
@@ -58,7 +82,7 @@ body {
 
 .bubble-left {
   align-self: flex-start;
-  background-color: #e6f7ff;
+  background-color: #acdff6;
   padding: 10px;
   border-radius: 10px 10px 10px 0;
   margin-left: 10px;
@@ -128,4 +152,38 @@ body {
 
 .send-button {
   width: 100px;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  background-color: #90949c;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 2px;
+  animation: typing-bounce 1.4s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(1) { animation-delay: 0s; }
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+.bot-typing {
+  display: flex;
+  align-items: center;
+}
+
+.bot-typing .bot-avatar-small {
+  margin-right: 8px;
 }

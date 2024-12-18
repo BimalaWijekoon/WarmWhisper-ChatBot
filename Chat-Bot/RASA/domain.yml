@@ -17,68 +17,111 @@ intents:
 
 responses:
   utter_greet:
-    - text: "Hello! How can I help you today?"
-    - text: "Hi there! Nice to meet you."
-    - text: "Hey! Welcome back."
+  - text: "Hello {first_name}! I'm here to support you—how can I help today?"
+  - text: "Hi {first_name}! It's nice to connect with you. What's on your mind?"
+  - text: "Hey {first_name}, welcome. Take your time, and let me know how I can assist."
+  - text: "Hi there {first_name}! I'm here to listen. How are you feeling today?"
+  - text: "Hello {first_name}. You're in a safe space here. What can I do for you?"
+  - text: "Hi {first_name}, I'm glad you're here. Let's talk whenever you're ready."
+  - text: "Hey {first_name}, welcome back. How are things going for you?"
+  - text: "Hello {first_name}, it's good to see you here. How can I help today?"
+  - text: "Hi {first_name}, take a deep breath. Let's work through this together."
+  - text: "Hey {first_name}, I'm here for you. What's on your heart or mind today?"
+
 
   utter_bye:
-    - text: "Goodbye! Have a great day."
-    - text: "See you later! Take care."
-    - text: "Bye! Looking forward to our next chat."
+  - text: "Goodbye {first_name}! Take care of yourself, and see you next time."
+  - text: "See you later {first_name}! Remember, I'm here whenever you need me."
+  - text: "Bye {first_name}! Wishing you peace and calm until we talk again."
+  - text: "Goodbye {first_name}! Don't forget to be kind to yourself."
+  - text: "Take care {first_name}! I'm here if you ever want to talk again."
+  - text: "Bye {first_name}! Stay safe, and I'll be here when you're ready to chat."
+  - text: "Goodbye {first_name}! Wishing you a day filled with moments of joy."
+  - text: "See you later {first_name}! You're doing great—keep going."
+  - text: "Bye {first_name}! Remember, one step at a time is all it takes."
+  - text: "Take care {first_name}! Looking forward to talking with you again soon."
+
 
   utter_feelings_reply:
-    - text: "I'm doing well, thanks for asking! How about you?"
-    - text: "I'm having a good day. Hope you are too!"
-    - text: "Thanks for asking - I'm functioning perfectly."
+  - text: "I'm doing well, thank you for asking! How are you feeling today, {first_name}?"
+  - text: "I'm here and ready to help, {first_name}. How are things going with you?"
+  - text: "Thanks for asking, {first_name! I'm feeling good. What's on your mind?"
+  - text: "I'm doing well, {first_name}. I hope you're taking care of yourself today."
+  - text: "I'm functioning perfectly, {first_name}. How are you feeling right now?"
+  - text: "Thank you for asking, {first_name}! I'm here for you. How are you doing?"
+  - text: "I'm doing well, {first_name}. It means a lot that you asked. How about you?"
+  - text: "I'm feeling good, {first_name}. Let's focus on you—how are you feeling?"
+  - text: "I'm here and ready to support you, {first_name}. How are you holding up?"
+  - text: "I'm doing well, {first_name}. I hope your day is going okay so far."
+
 
   utter_affirm_reply:
-    - text: "Great! Let's proceed."
-    - text: "Perfect, I understand."
-    - text: "Excellent, we're on the same page."
+  - text: "Great! Let's take the next step together, {first_name}."
+  - text: "Perfect, I understand you completely, {first_name}."
+  - text: "Excellent! We're on the same page, {first_name}."
+  - text: "That's wonderful, {first_name}. Let's keep moving forward."
+  - text: "I'm glad to hear that, {first_name}. Let's continue."
+  - text: "Awesome, {first_name}! I'm here with you every step of the way."
+  - text: "That's great, {first_name}. Let's focus on what's next."
+  - text: "I'm so glad we're aligned, {first_name}. Let's proceed."
+  - text: "Fantastic, {first_name}. I'm here to guide you from here."
+  - text: "Wonderful, {first_name}! Let's keep going at your pace."
+
 
   utter_deny_reply:
-    - text: "No problem, let me know what you need instead."
-    - text: "That's fine, we can try something else."
-    - text: "Okay, let's look at other options."
-
-  utter_emotions_empathy:
-    - text: "I understand how you're feeling. It's completely normal to experience {emotion}."
-    - text: "Thank you for sharing your emotions with me. It's important to acknowledge how we feel."
-    - text: "I hear you. {emotion} can be quite intense."
+  - text: "No problem, {first_name}. Let me know what works better for you."
+  - text: "That's okay, {first_name}. We can explore another approach together."
+  - text: "I understand, {first_name. Let's try something else that feels right for you."
+  - text: "Alright, {first_name}. We can adjust and find what suits you best."
+  - text: "No worries, {first_name. Let's look at a different option."
+  - text: "That's fine, {first_name}. I'm here to work through this with you."
+  - text: "Got it, {first_name}. Let me know how you'd like to proceed."
+  - text: "It's all good, {first_name}. Let's find something that feels better for you."
+  - text: "Okay, {first_name}. We can always try a new approach together."
+  - text: "That's completely okay, {first_name}. Let's figure this out step by step."
 
   utter_greet_bye:
-    - text: "Hi there! Oh, are you leaving already? Take care!"
-    - text: "Hello and goodbye! Have a wonderful day ahead."
-    - text: "Hi! Sorry to see you go so soon. Bye!"
+    - text: "Hi there {first_name}! Oh, are you leaving already? Take care!"
+    - text: "Hello and goodbye {first_name}! Have a wonderful day ahead."
+    - text: "Hi! Sorry to see you go so soon. Bye {first_name}!"
 
   utter_bye_greet:
-    - text: "Goodbye and hello again! Make up your mind! 😊"
-    - text: "Leaving and coming back? I'm happy either way!"
-    - text: "Both bye and hi? I'm here whenever you need me."
+    - text: "Goodbye and hello again {first_name}! Make up your mind! 😊"
+    - text: "Leaving and coming back? I'm happy either way! You are so funny {first_name}"
+    - text: "Both bye and hi? I'm here whenever you need me {first_name}."
 
   utter_greet_feelings:
-    - text: "Hello! I'm glad you're asking how I'm feeling. I'm doing great!"
-    - text: "Hi there! Thanks for your concern about my feelings. I'm functioning well!"
-    - text: "Hey! How thoughtful of you to ask about my feelings. I'm doing fine!"
+    - text: "Hello {first_name}! I'm glad you're asking how I'm feeling. I'm doing great!"
+    - text: "Hi there {first_name}! Thanks for your concern about my feelings. I'm functioning well!"
+    - text: "Hey {first_name}! How thoughtful of you to ask about my feelings. I'm doing fine!"
 
   utter_greet_emotions:
-    - text: "Hi! I appreciate you sharing your emotions with me. Would you like to talk more about it?"
-    - text: "Hello! Thank you for opening up about how you're feeling. I'm here to listen."
-    - text: "Hey! It's brave of you to express your emotions. Let's talk about it."
+    - text: "Hi {first_name}! I appreciate you sharing your emotions with me. Would you like to talk more about it?"
+    - text: "Hello {first_name}! Thank you for opening up about how you're feeling. I'm here to listen."
+    - text: "Hey {first_name}! It's brave of you to express your emotions. Let's talk about it."
 
   utter_emotions_bye:
-    - text: "I understand you're feeling {emotion}. Hope you feel better!"
-    - text: "I acknowledge your feelings. Take good care of yourself!"
+    - text: "I understand you're feeling {emotion}. Hope you feel better {first_name}!"
+    - text: "I acknowledge your feelings. Take good care of yourself {first_name}!"
 
   utter_feelings_emotions:
-    - text: "While I'm doing fine, I notice you're feeling {emotion}. Would you like to talk about it?"
-    - text: "I'm well, thank you. I see you're experiencing some emotions - I'm here to listen."
-    - text: "Thanks for asking about me. More importantly, how are you coping with these feelings?"
+    - text: "While I'm doing fine, I notice you're feeling {emotion}. Would you like to talk about it {first_name}?"
+    - text: "I'm well, thank you. I see you're experiencing some emotions - I'm here to listen {first_name}."
+    - text: "Thanks for asking about me. More importantly, how are you coping with these feelings {first_name}?"
 
 actions:
   - action_detect_emotion
+  - action_process_message
+  - action_respond_to_emotion
 
 slots:
+
+  first_name:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
   fallback_triggered:
     type: bool
     initial_value: False
