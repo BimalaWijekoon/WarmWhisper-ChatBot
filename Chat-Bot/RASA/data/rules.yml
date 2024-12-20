@@ -68,7 +68,7 @@ rules:
 
   - rule: Handle greet and feelings combination
     steps:
-      - intent: greet,feeling
+      - intent: greet,feelings
       - action: utter_greet_feelings
 
   - rule: Handle greet and emotions combination

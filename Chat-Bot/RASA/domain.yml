@@ -10,7 +10,7 @@ intents:
   - greet,bye
   - nlu_fallback  # Added for handling fallback situations
   - bye,greet
-  - greet,feeling
+  - greet,feelings
   - greet,emotions
   - emotions,bye
   - feelings,emotions
@@ -73,7 +73,7 @@ responses:
   - text: "That's okay, {first_name}. We can explore another approach together."
   - text: "I understand, {first_name. Let's try something else that feels right for you."
   - text: "Alright, {first_name}. We can adjust and find what suits you best."
-  - text: "No worries, {first_name. Let's look at a different option."
+  - text: "No worries, {first_name}. Let's look at a different option."
   - text: "That's fine, {first_name}. I'm here to work through this with you."
   - text: "Got it, {first_name}. Let me know how you'd like to proceed."
   - text: "It's all good, {first_name}. Let's find something that feels better for you."

@@ -1,0 +1,49 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"deny\"}}]": "utter_deny_reply",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"deny\"}}, {\"prev_action\": {\"action_name\": \"utter_deny_reply\"}, \"user\": {\"intent\": \"deny\"}}]": "action_listen",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_detect_emotion",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_respond_to_emotion",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_respond_to_emotion\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,feelings\"}}]": "utter_greet_feelings",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,feelings\"}}, {\"prev_action\": {\"action_name\": \"utter_greet_feelings\"}, \"user\": {\"intent\": \"greet,feelings\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}]": "action_process_message",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"action_process_message\"}, \"user\": {\"intent\": \"greet\"}}]": "utter_greet",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"action_process_message\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,bye\"}}]": "utter_greet_bye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,bye\"}}, {\"prev_action\": {\"action_name\": \"utter_greet_bye\"}, \"user\": {\"intent\": \"greet,bye\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_detect_emotion\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bye\"}}]": "utter_bye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bye\"}}, {\"prev_action\": {\"action_name\": \"utter_bye\"}, \"user\": {\"intent\": \"bye\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"feelings\"}}]": "utter_feelings_reply",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"feelings\"}}, {\"prev_action\": {\"action_name\": \"utter_feelings_reply\"}, \"user\": {\"intent\": \"feelings\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"emotions,bye\"}}]": "action_detect_emotion",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"emotions,bye\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"emotions,bye\"}}]": "utter_emotions_bye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"emotions,bye\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"emotions,bye\"}}, {\"prev_action\": {\"action_name\": \"utter_emotions_bye\"}, \"user\": {\"intent\": \"emotions,bye\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,emotions\"}}]": "utter_greet",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,emotions\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet,emotions\"}}]": "action_detect_emotion",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,emotions\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet,emotions\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"greet,emotions\"}}]": "action_respond_to_emotion",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet,emotions\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet,emotions\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"greet,emotions\"}}, {\"prev_action\": {\"action_name\": \"action_respond_to_emotion\"}, \"user\": {\"intent\": \"greet,emotions\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bye,greet\"}}]": "utter_bye_greet",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bye,greet\"}}, {\"prev_action\": {\"action_name\": \"utter_bye_greet\"}, \"user\": {\"intent\": \"bye,greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"affirm\"}}]": "utter_affirm_reply",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"affirm\"}}, {\"prev_action\": {\"action_name\": \"utter_affirm_reply\"}, \"user\": {\"intent\": \"affirm\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"emotions\"}}]": "action_detect_emotion",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"emotions\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"emotions\"}}]": "action_respond_to_emotion",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"emotions\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"emotions\"}}, {\"prev_action\": {\"action_name\": \"action_respond_to_emotion\"}, \"user\": {\"intent\": \"emotions\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"feelings,emotions\"}}]": "action_detect_emotion",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"feelings,emotions\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"feelings,emotions\"}}]": "utter_feelings_emotions",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"feelings,emotions\"}}, {\"prev_action\": {\"action_name\": \"action_detect_emotion\"}, \"user\": {\"intent\": \"feelings,emotions\"}}, {\"prev_action\": {\"action_name\": \"utter_feelings_emotions\"}, \"user\": {\"intent\": \"feelings,emotions\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "predicting default action with intent session_start",
+      "predicting default action with intent restart",
+      "[{\"prev_action\": {\"action_name\": \"action_detect_emotion\"}}]",
+      "predicting default action with intent back"
+    ]
+  }
+}
