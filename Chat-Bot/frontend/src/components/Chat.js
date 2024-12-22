@@ -3,44 +3,40 @@ import axios from 'axios';
 import { Button, Input } from 'antd';
 import './Chat.css';
 import Navbar from "./NavbarChat";
-import BotAvatar from '../components/images/download.png'; // Import the bot avatar image
+import BotAvatar from '../components/images/download.png';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
-  const [userDetails, setUserDetails] = useState(null); // Store user details fetched from backend
+  const [userDetails, setUserDetails] = useState(null);
   const [sessionId, setSessionId] = useState(null);
-  const [isTyping, setIsTyping] = useState(false); // New state for typing indicator
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Function to generate a unique session ID
   const generateSessionId = () => {
     return 'session-' + Math.random().toString(36).substr(2, 9);
   };
 
-  // Function to scroll to the bottom of the chat window
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Fetch user details and load the most recent chat on login
   const fetchUserDetails = async () => {
-    const email = localStorage.getItem('email'); // Assuming email is stored in localStorage after login
+    const email = localStorage.getItem('email');
     if (email) {
       try {
         const response = await fetch(`http://localhost:5000/user-details?email=${email}`);
         if (!response.ok) throw new Error('Failed to fetch user details');
 
         const data = await response.json();
-        setUserDetails(data); // Store user details including the first name and profile picture
+        setUserDetails(data);
 
-        // Send welcome message using first name
         if (data.lastLogout === '00:00:00 0000-00-00') {
           sendBotMessage(`Hello, ${data.firstName}! Welcome to WarmWhisper. I'm here to assist you with anything you need. How can I help you today?`);
-          setSessionId(generateSessionId()); // Generate a new session ID for new users
+          setSessionId(generateSessionId());
         } else {
           sendBotMessage(`Welcome back, ${data.firstName}! How are you feeling today?`);
-          await loadMostRecentChat(email); // Load the most recent chat for returning users
+          await loadMostRecentChat(email);
         }
       } catch (error) {
         console.error('Error fetching user details:', error.message);
@@ -48,7 +44,6 @@ const Chat = () => {
     }
   };
 
-  // Function to load the most recent chat history
   const loadMostRecentChat = async (email) => {
     try {
       const response = await fetch(`http://localhost:5000/get-previous-chats?email=${email}`);
@@ -56,16 +51,15 @@ const Chat = () => {
 
       const data = await response.json();
       if (data.chats && data.chats.length > 0) {
-        const mostRecentChat = data.chats[0]; // Get the most recent chat
+        const mostRecentChat = data.chats[0];
         setMessages(mostRecentChat.messages);
-        setSessionId(mostRecentChat.sessionId); // Set the session ID to the most recent one
+        setSessionId(mostRecentChat.sessionId);
       }
     } catch (error) {
       console.error('Error loading chat history:', error.message);
     }
   };
 
-  // Function to send a bot message
   const sendBotMessage = (message) => {
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -73,63 +67,72 @@ const Chat = () => {
     ]);
   };
 
-  // Fetch user details when the component mounts
   useEffect(() => {
     fetchUserDetails();
   }, []);
 
-  // Scroll to bottom whenever messages change
   useEffect(() => {
     scrollToBottom();
-    localStorage.setItem('messages', JSON.stringify(messages)); // Save messages to localStorage whenever they change
+    localStorage.setItem('messages', JSON.stringify(messages));
   }, [messages]);
 
-  // New function for typing indicator
   const showTypingIndicator = () => {
     setIsTyping(true);
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-      }, 2000); // Minimum 2 seconds typing animation
+      }, 2000);
     });
   };
 
-  // Updated sendMessage function
+  const handleSadnessDetection = async (botMessage) => {
+    if (botMessage.toLowerCase().includes('sadness')) {
+      try {
+        const email = localStorage.getItem('email');
+        const response = await axios.post('http://localhost:5000/send-emergency-email', {
+          email: email
+        });
+
+        if (response.status === 200) {
+          setMessages(prevMessages => [
+            ...prevMessages,
+            { bot: `I've notified your relative about how you're feeling. They care about you and will reach out soon.` }
+          ]);
+        }
+      } catch (error) {
+        console.error('Error sending emergency email:', error);
+      }
+    }
+  };
+
   const sendMessage = async () => {
     if (!userDetails) {
       console.warn('User details not loaded yet.');
-      return; // Optionally handle this case differently
+      return;
     }
     if (userInput.trim() === '') return;
   
-    // Immediately show user message and clear input
     const userMessage = userInput;
     setMessages((prevMessages) => [...prevMessages, { user: userMessage }]);
     setUserInput('');
   
     try {
-      // Show typing indicator
       setIsTyping(true);
       
-      // Create a promise that resolves after minimum 2 seconds
       const typingPromise = showTypingIndicator();
       
-      // Send the message to the Rasa server with first name
       const rasaPromise = axios.post('http://localhost:5005/webhooks/rest/webhook', {
         sender: sessionId,
         message: userMessage,
-        metadata: {  // Wrap first_name in metadata object
+        metadata: {
           first_name: userDetails ? userDetails.firstName : 'User'
         }
       });
   
-      // Wait for both minimum typing time and Rasa response
       const [response] = await Promise.all([rasaPromise, typingPromise]);
   
-      // Hide typing indicator
       setIsTyping(false);
   
-      // Display bot responses
       const botResponses = response.data.map((msg) => msg.text).filter(Boolean);
   
       if (botResponses.length > 0) {
@@ -137,6 +140,10 @@ const Chat = () => {
           ...prevMessages,
           ...botResponses.map((botResponse) => ({ bot: botResponse })),
         ]);
+
+        botResponses.forEach(botResponse => {
+          handleSadnessDetection(botResponse);
+        });
       }
     } catch (error) {
       console.error('Error sending message:', error);
@@ -148,26 +155,17 @@ const Chat = () => {
     }
   };
 
-  // Function to handle new chat creation
   const handleNewChat = async () => {
-    // Save the current chat history before starting a new chat
     await saveChatHistory();
-
-    // Generate new session ID
     const newSessionId = generateSessionId();
-    setSessionId(newSessionId); // Update session ID
-    localStorage.setItem('sessionId', newSessionId); // Store new session ID in localStorage
-
-    // Clear the chat messages
+    setSessionId(newSessionId);
+    localStorage.setItem('sessionId', newSessionId);
     setMessages([]);
-
-    // Send a welcome message for the new chat session
     if (userDetails) {
       sendBotMessage(`Hello, ${userDetails.firstName}! Welcome to a new chat session. How can I assist you?`);
     }
   };
 
-  // Function to load a chat by session ID
   const loadChatHistory = async (chatSessionId) => {
     const email = localStorage.getItem('email');
     if (email && chatSessionId) {
@@ -184,7 +182,6 @@ const Chat = () => {
     }
   };
 
-  // Function to save chat history
   const saveChatHistory = async () => {
     const email = localStorage.getItem('email');
 
