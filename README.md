@@ -1,0 +1,143 @@
+# WarmWhisper ChatBot
+
+WarmWhisper is a mental-health support chatbot that combines a React web app, a Node.js backend, and a Rasa conversational AI stack. The project is designed to provide supportive conversations, user authentication, and persistent chat history.
+
+## Project Components
+
+- **Frontend (`frontend/`)**: React application with authentication and chat UI.
+- **Backend (`Database/`)**: Express + MongoDB service for user management and chat persistence.
+- **Conversational AI (`RASA/`)**: Rasa NLU + dialogue model and custom actions.
+- **Model Experiments (`Model-tune/`)**: Python scripts for emotion model fine-tuning and testing.
+
+## Architecture Overview
+
+1. Users interact with the React app on **port 3000**.
+2. The React app sends conversational requests to the Rasa server on **port 5005**.
+3. The React app and chatbot workflows call backend endpoints on **port 5000** for:
+   - sign-up / login
+   - user profile retrieval
+   - chat history storage and retrieval
+4. Backend stores data in MongoDB.
+
+## Prerequisites
+
+Install these before running the full system:
+
+- **Node.js** 18+ and npm
+- **Python** 3.9+ (for Rasa and model scripts)
+- **MongoDB** (local instance or cloud URI)
+- **Rasa** CLI installed in your Python environment
+
+## Environment Variables
+
+Create a `.env` file in `Database/` with the following values:
+
+```env
+PORT=5000
+MONGODB_URI=<your_mongodb_connection_string>
+EMAIL_USER=<gmail_address_used_to_send_emails>
+EMAIL_PASS=<app_password_or_email_password>
+```
+
+> The backend reads these values in `Database/index.js`.
+
+## Installation
+
+### 1) Install frontend dependencies
+
+```bash
+cd frontend
+npm install
+```
+
+### 2) Install backend dependencies
+
+```bash
+cd ../Database
+npm install
+```
+
+### 3) Install Rasa/Python dependencies
+
+Set up your Python environment and install the packages required by your Rasa project and model scripts.
+
+## Run the Application
+
+From `frontend/`, run:
+
+```bash
+npm start
+```
+
+This launches all required services concurrently via frontend scripts:
+
+- `start-react` → React development server
+- `start-rasa` → `rasa run --cors "*"`
+- `start-actions` → `rasa run actions`
+- `start-server` → Node backend server
+
+Then open: `http://localhost:3000`
+
+## Useful Commands
+
+### Frontend (`frontend/`)
+
+```bash
+npm start
+npm run start-react
+npm run build
+npm test
+```
+
+### Backend (`Database/`)
+
+```bash
+npm start
+npm run dev
+npm run build
+npm test
+```
+
+### Rasa (`RASA/`)
+
+```bash
+rasa run --cors "*"
+rasa run actions
+rasa test
+```
+
+### Model Tuning (`Model-tune/`)
+
+```bash
+python tune.py
+python pretest.py
+python finetest.py
+```
+
+## Testing
+
+- Frontend tests are run with `npm test` in `frontend/`.
+- Backend currently has no implemented automated test suite (`npm test` exits with an error message by default).
+- Rasa conversation/NLU tests can be run with `rasa test` from `RASA/`.
+
+## Repository Structure
+
+```text
+Chat-Bot/
+├── Database/      # Express API + MongoDB models/routes
+├── frontend/      # React client app
+├── RASA/          # Rasa domain, data, models, actions
+├── Model-tune/    # Emotion model experimentation scripts
+└── README.md
+```
+
+## Troubleshooting
+
+- **`react-scripts: not found`**: run `npm install` inside `frontend/`.
+- **Mongo connection errors**: verify `MONGODB_URI` in `Database/.env`.
+- **Rasa command not found**: activate the Python environment where Rasa is installed.
+- **Port conflicts**: ensure ports `3000`, `5000`, and `5005` are free.
+
+## Notes
+
+This repository focuses on mental-health support interactions. Avoid committing real user credentials or sensitive personal data.
