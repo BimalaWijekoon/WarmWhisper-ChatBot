@@ -45,7 +45,7 @@ responses:
   utter_feelings_reply:
   - text: "I'm doing well, thank you for asking! How are you feeling today, {first_name}?"
   - text: "I'm here and ready to help, {first_name}. How are things going with you?"
-  - text: "Thanks for asking, {first_name! I'm feeling good. What's on your mind?"
+  - text: "Thanks for asking, {first_name}! I'm feeling good. What's on your mind?"
   - text: "I'm doing well, {first_name}. I hope you're taking care of yourself today."
   - text: "I'm functioning perfectly, {first_name}. How are you feeling right now?"
   - text: "Thank you for asking, {first_name}! I'm here for you. How are you doing?"
@@ -71,7 +71,7 @@ responses:
   utter_deny_reply:
   - text: "No problem, {first_name}. Let me know what works better for you."
   - text: "That's okay, {first_name}. We can explore another approach together."
-  - text: "I understand, {first_name. Let's try something else that feels right for you."
+  - text: "I understand, {first_name}. Let's try something else that feels right for you."
   - text: "Alright, {first_name}. We can adjust and find what suits you best."
   - text: "No worries, {first_name}. Let's look at a different option."
   - text: "That's fine, {first_name}. I'm here to work through this with you."
@@ -122,6 +122,13 @@ slots:
     mappings:
       - type: custom
 
+  # Phase 1: slot-based distress flag (replaces brittle string-match in frontend)
+  is_distress:
+    type: bool
+    initial_value: false
+    mappings:
+      - type: custom
+
   fallback_triggered:
     type: bool
     initial_value: False
@@ -166,6 +173,13 @@ slots:
           - sadness
           - surprise
           - neutral
+
+  # MAG Phase 3: memory context injected from memory service
+  memory_context:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
 
 
 session_config:

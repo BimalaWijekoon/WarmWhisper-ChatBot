@@ -1,214 +1,194 @@
-// src/components/Navbar.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../App';
 import './NavbarChat.css';
-import Modal from './Modal'; // Import Modal component
 
-const Navbar = ({ sessionId, messages, onNewChat, loadChatHistory, setSessionId, setMessages, sendBotMessage }) => { // Added sendBotMessage prop
+const BACKEND = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+
+const NavbarChat = ({
+  sessionId, messages, onNewChat, loadChatHistory,
+  setSessionId, setMessages, sendBotMessage,
+  saveChatHistory, onMemoryToggle, memoryOpen, userDetails,
+}) => {
   const navigate = useNavigate();
-  const [userDetails, setUserDetails] = useState(null); // State to store user details
-  const [isModalVisible, setIsModalVisible] = useState(false); // State for controlling modal visibility
-  const [modalMessage, setModalMessage] = useState(''); // State for modal message
-  const [modalType, setModalType] = useState('info'); // State for modal type
-  const [previousChats, setPreviousChats] = useState([]); // State to store previous chats
+  const { theme, toggleTheme } = useTheme();
+  const [previousChats,  setPreviousChats]  = useState([]);
+  const [historyOpen,    setHistoryOpen]    = useState(false);
+  const [loggingOut,     setLoggingOut]     = useState(false);
+  const dropdownRef = useRef(null);
 
-  // Fetch user details using their email from local storage
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      const email = localStorage.getItem('email'); // Get the user's email from local storage
-      if (email) {
-        try {
-          const response = await fetch(`http://localhost:5000/user-details?email=${email}`);
-          if (response.ok) {
-            const data = await response.json();
-            setUserDetails(data); // Set the fetched user details
-          } else {
-            console.error('Error fetching user details:', response.statusText);
-          }
-        } catch (error) {
-          console.error('Error fetching user details:', error.message);
-        }
-      }
-    };
-
-    fetchUserDetails();
-    fetchPreviousChats(); // Fetch previous chats when component mounts
+    fetchPreviousChats();
+    // Close dropdown on outside click
+    const handler = (e) => { if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setHistoryOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // Function to fetch previous chats
   const fetchPreviousChats = async () => {
     const email = localStorage.getItem('email');
-    if (email) {
-      try {
-        const response = await fetch(`http://localhost:5000/get-previous-chats?email=${email}`);
-        if (response.ok) {
-          const data = await response.json();
-          setPreviousChats(data.chats); // Assuming the response contains an array of chats
-        } else {
-          console.error('Error fetching previous chats:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching previous chats:', error.message);
+    if (!email) return;
+    try {
+      const res = await fetch(`${BACKEND}/get-previous-chats?email=${email}`);
+      if (res.ok) {
+        const { chats } = await res.json();
+        setPreviousChats(chats || []);
       }
-    }
+    } catch (err) { console.error('Error fetching chats:', err.message); }
   };
 
-  // Function to save chat history
-  const saveChatHistory = async () => {
-    const email = localStorage.getItem('email');
-
-    if (email && sessionId && messages && messages.length > 0) {
-      try {
-        const response = await fetch('http://localhost:5000/save-chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, sessionId, messages }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to save chat history.');
-        }
-
-        console.log('Chat history saved successfully.');
-        fetchPreviousChats(); // Refresh the list of previous chats
-      } catch (error) {
-        console.error('Error saving chat history:', error.message);
-      }
-    } else {
-      console.error('Missing data to save chat history:', { email, sessionId, messages });
-    }
-  };
-
-  // Logout function
   const handleLogout = async () => {
-    if (sessionId && messages.length > 0) {
-      await saveChatHistory(); // Save chat history before logging out
-    }
+    setLoggingOut(true);
+    if (sessionId && messages.length > 0) await saveChatHistory?.();
 
     const email = localStorage.getItem('email');
     if (email) {
-      try {
-        // Update lastLogout time in the backend
-        await fetch('http://localhost:5000/update-logout-time', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
-        });
-        console.log('Logout time updated successfully.');
-      } catch (error) {
-        console.error('Error updating logout time:', error.message);
-      }
+      await fetch(`${BACKEND}/update-logout-time`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      }).catch(() => {});
     }
 
-    // Clear local storage
     localStorage.clear();
-
-    // Show modal message
-    setModalMessage('User successfully logged out. Chat saved.');
-    setModalType('success');
-    setIsModalVisible(true);
-  };
-
-  // Handle modal OK button click
-  const handleModalClose = () => {
-    setIsModalVisible(false);
-    // Redirect to the login page
     navigate('/login');
   };
 
-  // Function to handle new chat creation
   const handleNewChat = async () => {
     if (sessionId && messages.length > 0) {
-      await saveChatHistory(); // Save the current chat history before starting a new chat
+      await saveChatHistory?.();
+      await fetchPreviousChats();
     }
-
-    // Generate new session ID
-    const newSessionId = 'session-' + Math.random().toString(36).substr(2, 9);
-    setSessionId(newSessionId); // Update session ID
-    localStorage.setItem('sessionId', newSessionId); // Store new session ID in localStorage
-
-    // Clear the chat messages
-    setMessages([]);
-
-    // Send a welcome message for the new chat session
-    if (userDetails) {
-      sendBotMessage(`Hello, ${userDetails.firstName}! Welcome to a new chat session. How can I assist you?`);
-    }
+    await onNewChat?.();
   };
 
-  // Function to handle loading a previous chat
-  const handleLoadChat = (chatSessionId) => {
-    if (loadChatHistory) {
-      loadChatHistory(chatSessionId); // Call the loadChatHistory prop to load the selected chat
-    } else {
-      console.error('loadChatHistory is not a function');
-    }
+  const handleLoadChat = async (chatSessionId) => {
+    await saveChatHistory?.();
+    await loadChatHistory?.(chatSessionId);
+    setHistoryOpen(false);
   };
 
-  // Helper function to format date and time
-  const formatDateTime = (dateTime) => {
-    const date = new Date(dateTime);
-    return date.toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
-  };
+  const fmt = (d) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  const initial = userDetails?.firstName?.[0]?.toUpperCase() || 'U';
 
   return (
-    <>
-      <nav className="chatnavbar">
-        {/* Left side: User's welcome message */}
-        <div className="chatnavbar-left">
-          Welcome, {userDetails ? userDetails.firstName : 'Guest'}
+    <motion.nav
+      className="chat-navbar"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      role="navigation"
+      aria-label="Chat navigation"
+    >
+      {/* Brand */}
+      <div className="chat-navbar-brand">
+        <span className="chat-navbar-logo" aria-hidden="true">🫀</span>
+        <span className="chat-navbar-name">WarmWhisper</span>
+      </div>
+
+      {/* Actions */}
+      <div className="chat-navbar-actions">
+        {/* Memory panel toggle */}
+        <motion.button
+          id="navbar-memory-btn"
+          className={`navbar-btn ${memoryOpen ? 'navbar-btn--active' : ''}`}
+          onClick={onMemoryToggle}
+          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+          aria-label="Toggle memory panel"
+          aria-pressed={memoryOpen}
+        >
+          🧠 Memory
+        </motion.button>
+
+        {/* New chat */}
+        <motion.button
+          id="navbar-new-chat-btn"
+          className="navbar-btn"
+          onClick={handleNewChat}
+          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+          aria-label="Start new chat"
+        >
+          ✏️ New
+        </motion.button>
+
+        {/* Chat history dropdown */}
+        <div className="navbar-dropdown" ref={dropdownRef}>
+          <motion.button
+            id="navbar-history-btn"
+            className={`navbar-btn ${historyOpen ? 'navbar-btn--active' : ''}`}
+            onClick={() => setHistoryOpen(o => !o)}
+            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+            aria-haspopup="listbox"
+            aria-expanded={historyOpen}
+          >
+            📋 History
+          </motion.button>
+
+          <AnimatePresence>
+            {historyOpen && (
+              <motion.div
+                className="navbar-dropdown-menu"
+                role="listbox"
+                aria-label="Previous chats"
+                initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                transition={{ duration: 0.2 }}
+              >
+                {previousChats.length === 0 ? (
+                  <div className="navbar-dropdown-empty">No saved chats yet</div>
+                ) : (
+                  previousChats.map((chat, i) => (
+                    <button
+                      key={chat.sessionId}
+                      className="navbar-dropdown-item"
+                      role="option"
+                      onClick={() => handleLoadChat(chat.sessionId)}
+                    >
+                      <span className="dropdown-item-label">Chat {i + 1}</span>
+                      <span className="dropdown-item-date">{fmt(chat.savedAt)}</span>
+                    </button>
+                  ))
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Middle: Bot name */}
-        <div className="chatnavbar-brand">WarmWhisper</div>
+        {/* Theme toggle */}
+        <motion.button
+          className="navbar-btn navbar-btn--icon"
+          onClick={toggleTheme}
+          whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        >
+          {theme === 'light' ? '🌙' : '☀️'}
+        </motion.button>
 
-        {/* Right side: Logout and New Chat buttons */}
-        <div className="chatnavbar-right">
-          {/* New Chat button */}
-          <div className="nav-button" onClick={handleNewChat}>
-            New Chat
+        {/* User avatar + logout */}
+        <div className="navbar-user">
+          <div className="navbar-avatar" aria-label={`Logged in as ${userDetails?.firstName || 'User'}`}>
+            {userDetails?.profilePicture
+              ? <img src={userDetails.profilePicture} alt="You" />
+              : <span>{initial}</span>
+            }
           </div>
-
-          {/* Previous Chats dropdown */}
-          <div className="nav-dropdown">
-            <div className="nav-button">Previous Chats</div>
-            <div className="dropdown-content">
-              {previousChats.length > 0 ? (
-                previousChats.map((chat, index) => (
-                  <div
-                    key={index}
-                    className="dropdown-item"
-                    onClick={() => handleLoadChat(chat.sessionId)}
-                  >
-                    Chat {index + 1} - {formatDateTime(chat.savedAt)}
-                  </div>
-                ))
-              ) : (
-                <div className="dropdown-item">No previous chats</div>
-              )}
-            </div>
-          </div>
-
-          {/* Logout button */}
-          <div className="nav-button" onClick={handleLogout}>
-            Logout
-          </div>
+          <motion.button
+            id="navbar-logout-btn"
+            className="navbar-logout"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+            aria-label="Log out"
+          >
+            {loggingOut ? '…' : 'Sign out'}
+          </motion.button>
         </div>
-      </nav>
-
-      {/* Modal for showing logout success message */}
-      <Modal
-        show={isModalVisible}
-        handleClose={handleModalClose}
-        type={modalType}
-        message={modalMessage}
-      />
-    </>
+      </div>
+    </motion.nav>
   );
 };
 
-export default Navbar;
+export default NavbarChat;

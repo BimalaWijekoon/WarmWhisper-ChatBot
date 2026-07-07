@@ -1,91 +1,128 @@
-#### This file contains tests to evaluate that your bot behaves as expected.
-#### If you want to learn more, please see the docs: https://rasa.com/docs/rasa/testing-your-assistant
+#### WarmWhisper v2 — RASA Regression Test Stories
+#### Tests match the actual domain.yml intents and actions.
+#### Run with: rasa test
 
 stories:
-- story: happy path 1
-  steps:
-  - user: |
-      hello there!
-    intent: greet
-  - action: utter_greet
-  - user: |
-      amazing
-    intent: mood_great
-  - action: utter_happy
 
-- story: happy path 2
-  steps:
-  - user: |
-      hello there!
-    intent: greet
-  - action: utter_greet
-  - user: |
-      amazing
-    intent: mood_great
-  - action: utter_happy
-  - user: |
-      bye-bye!
-    intent: goodbye
-  - action: utter_goodbye
+# ── Core intent flows ────────────────────────────────────────────────────────
 
-- story: sad path 1
+- story: test greeting flow
   steps:
   - user: |
-      hello
+      Hello there!
     intent: greet
+  - action: action_process_message
   - action: utter_greet
+
+- story: test goodbye flow
+  steps:
   - user: |
-      not good
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
+      Goodbye
+    intent: bye
+  - action: utter_bye
+
+- story: test feelings inquiry flow
+  steps:
   - user: |
-      yes
+      How are you feeling today?
+    intent: feelings
+  - action: utter_feelings_reply
+
+- story: test affirmation flow
+  steps:
+  - user: |
+      Yes, that sounds good
     intent: affirm
-  - action: utter_happy
+  - action: utter_affirm_reply
 
-- story: sad path 2
+- story: test denial flow
   steps:
   - user: |
-      hello
+      No, not really
+    intent: deny
+  - action: utter_deny_reply
+
+# ── Emotion detection flows ───────────────────────────────────────────────────
+
+- story: test emotion detection flow
+  steps:
+  - user: |
+      I'm feeling really anxious and scared
+    intent: emotions
+  - action: action_detect_emotion
+  - action: action_respond_to_emotion
+
+- story: test fallback emotion detection
+  steps:
+  - user: |
+      I've been struggling so much lately with everything going on
+    intent: nlu_fallback
+  - action: action_detect_emotion
+  - action: action_respond_to_emotion
+
+# ── Multi-intent compound flows ───────────────────────────────────────────────
+
+- story: test greet and bye compound
+  steps:
+  - user: |
+      Hi, bye
+    intent: greet,bye
+  - action: utter_greet_bye
+
+- story: test bye and greet compound
+  steps:
+  - user: |
+      Goodbye, hello
+    intent: bye,greet
+  - action: utter_bye_greet
+
+- story: test greet and feelings compound
+  steps:
+  - user: |
+      Hi, how are you feeling?
+    intent: greet,feelings
+  - action: utter_greet_feelings
+
+- story: test greet and emotions compound
+  steps:
+  - user: |
+      Hello, I'm feeling very sad today
+    intent: greet,emotions
+  - action: utter_greet
+  - action: action_detect_emotion
+  - action: action_respond_to_emotion
+
+- story: test emotions and bye compound
+  steps:
+  - user: |
+      I feel hopeless, goodbye
+    intent: emotions,bye
+  - action: action_detect_emotion
+  - action: utter_emotions_bye
+
+- story: test feelings and emotions compound
+  steps:
+  - user: |
+      How are you feeling?, I'm feeling overwhelmed
+    intent: feelings,emotions
+  - action: action_detect_emotion
+  - action: utter_feelings_emotions
+
+# ── Full conversation flow ────────────────────────────────────────────────────
+
+- story: test full session - greet, emotion, bye
+  steps:
+  - user: |
+      Hi there!
     intent: greet
+  - action: action_process_message
   - action: utter_greet
   - user: |
-      not good
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
+      I'm feeling really depressed and alone
+    intent: nlu_fallback
+  - action: action_detect_emotion
+  - action: action_respond_to_emotion
   - user: |
-      not really
-    intent: deny
-  - action: utter_goodbye
-
-- story: sad path 3
-  steps:
-  - user: |
-      hi
-    intent: greet
-  - action: utter_greet
-  - user: |
-      very terrible
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - user: |
-      no
-    intent: deny
-  - action: utter_goodbye
-
-- story: say goodbye
-  steps:
-  - user: |
-      bye-bye!
-    intent: goodbye
-  - action: utter_goodbye
-
-- story: bot challenge
-  steps:
-  - user: |
-      are you a bot?
-    intent: bot_challenge
-  - action: utter_iamabot
+      Thank you, bye
+    intent: bye
+  - action: utter_bye

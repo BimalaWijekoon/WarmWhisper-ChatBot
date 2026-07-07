@@ -1,5 +1,14 @@
+# Dependencies
 node_modules
 .venv
 
+# Model weights (large binary files)
 Model-tune/pretrained/model/model.safetensors
 Model-tune/finetuned/results
+
+# Environment variables - NEVER commit secrets
+.env
+.env.local
+Database/.env
+frontend/.env
+frontend/.env.local

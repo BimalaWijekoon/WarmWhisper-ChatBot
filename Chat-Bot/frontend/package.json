@@ -1,24 +1,18 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "warmwhisper-frontend",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.3.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "antd": "^5.20.5",
     "axios": "^1.7.7",
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.20.0",
-    "helmet": "^7.1.0",
-    "mongoose": "^8.6.1",
+    "framer-motion": "^11.3.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
-    "react-simple-chatbot": "^0.6.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -27,6 +21,7 @@
     "start-rasa": "cd ../RASA && rasa run --cors \"*\"",
     "start-actions": "cd ../RASA && rasa run actions",
     "start-server": "cd ../Database && npm start",
+    "start:dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

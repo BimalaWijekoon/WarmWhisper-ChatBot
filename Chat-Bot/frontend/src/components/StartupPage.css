@@ -1,51 +1,139 @@
-/* src/StartupPage.css */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #f0f8ff; /* Light blue background for a calming effect */
-}
+/* StartupPage.css — WarmWhisper v2 */
 
-.startup-container {
+.startup-page {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f0f8ff; /* Light blue background for a calming effect */
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-6);
 }
 
-.startup-content {
+/* Floating orbs */
+.startup-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Theme toggle */
+.startup-theme-toggle {
+  position: fixed;
+  top: var(--space-5);
+  right: var(--space-5);
+  width: 44px;
+  height: 44px;
+  background: var(--bg-glass);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-base);
+}
+
+.startup-theme-toggle:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+/* Main card */
+.startup-card {
+  position: relative;
+  z-index: 10;
+  max-width: 520px;
+  width: 100%;
+  padding: var(--space-12) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 40px;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  gap: var(--space-5);
 }
 
+/* Icon */
+.startup-icon {
+  font-size: 4rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.40));
+}
+
+/* Title */
 .startup-title {
-  font-size: 3rem;
-  color: #333;
-  margin-bottom: 20px;
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-accent-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.startup-subtitle {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-style: italic;
 }
 
 .startup-description {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 40px;
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 380px;
 }
 
-.startup-button {
-  background-color: #1890ff;
-  color: #ffffff;
-  padding: 15px 30px;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+/* Feature pills */
+.startup-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
 }
 
-.startup-button:hover {
-  background-color: #1070d0;
+.startup-feature-pill {
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-glass-dark);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary-500);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* CTA buttons */
+.startup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 300px;
+}
+
+.startup-cta {
+  width: 100%;
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-base);
+  border-radius: var(--radius-lg);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .startup-card {
+    padding: var(--space-8) var(--space-6);
+  }
+
+  .startup-title { font-size: var(--text-3xl); }
 }

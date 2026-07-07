@@ -1,0 +1,340 @@
+/* ============================================================
+   WarmWhisper v2 — Design System
+   Global CSS variables, typography, animations, utilities
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* ── Color tokens ─────────────────────────────────────────── */
+:root {
+  /* Primary palette — warm, calming purples/mauves */
+  --color-primary-50:  #f5f0ff;
+  --color-primary-100: #ede5ff;
+  --color-primary-200: #d8c5ff;
+  --color-primary-300: #be9eff;
+  --color-primary-400: #a07af4;
+  --color-primary-500: #8b5cf6;
+  --color-primary-600: #7c3aed;
+  --color-primary-700: #6d28d9;
+  --color-primary-800: #5b21b6;
+  --color-primary-900: #4c1d95;
+
+  /* Accent — soft rose (warm, not alarming) */
+  --color-accent-300: #fda4af;
+  --color-accent-400: #fb7185;
+  --color-accent-500: #f43f5e;
+
+  /* Teal calm accent */
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+
+  /* Neutral greys */
+  --color-neutral-50:  #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+
+  /* Semantic colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error:   #ef4444;
+  --color-info:    #3b82f6;
+
+  /* ── Light theme (default) ──────────────────────────────── */
+  --bg-page:         #f5f0ff;
+  --bg-surface:      rgba(255, 255, 255, 0.80);
+  --bg-surface-hover:rgba(255, 255, 255, 0.95);
+  --bg-glass:        rgba(255, 255, 255, 0.55);
+  --bg-glass-dark:   rgba(139, 92, 246, 0.08);
+  --bg-bot-bubble:   rgba(237, 229, 255, 0.90);
+  --bg-user-bubble:  linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+  --bg-input:        rgba(255, 255, 255, 0.90);
+  --bg-navbar:       rgba(255, 255, 255, 0.80);
+
+  --text-primary:    var(--color-neutral-900);
+  --text-secondary:  var(--color-neutral-600);
+  --text-muted:      var(--color-neutral-400);
+  --text-on-primary: #ffffff;
+  --text-bot:        var(--color-neutral-800);
+  --text-user:       #ffffff;
+
+  --border-color:    rgba(139, 92, 246, 0.15);
+  --border-color-focus: var(--color-primary-400);
+
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:  0 4px 16px rgba(139, 92, 246, 0.12), 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-lg:  0 12px 40px rgba(139, 92, 246, 0.18), 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-glow:0 0 20px rgba(139, 92, 246, 0.30);
+
+  --blur-glass: blur(20px) saturate(180%);
+  --blur-nav:   blur(12px) saturate(150%);
+
+  /* ── Spacing scale ──────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Typography ─────────────────────────────────────────── */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+  --text-4xl:  2.25rem;
+
+  /* ── Border radius ──────────────────────────────────────── */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-2xl:  40px;
+  --radius-full: 9999px;
+
+  /* ── Transitions ────────────────────────────────────────── */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:   250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* ── Emotion colors (for indicator + timeline) ──────────── */
+  --emotion-joy:           #fbbf24;
+  --emotion-sadness:       #6366f1;
+  --emotion-anger:         #ef4444;
+  --emotion-fear:          #8b5cf6;
+  --emotion-grief:         #4338ca;
+  --emotion-nervousness:   #a78bfa;
+  --emotion-love:          #f472b6;
+  --emotion-gratitude:     #10b981;
+  --emotion-excitement:    #f59e0b;
+  --emotion-confusion:     #94a3b8;
+  --emotion-neutral:       #71717a;
+  --emotion-default:       var(--color-primary-400);
+}
+
+/* ── Dark theme ───────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg-page:         #0f0a1e;
+  --bg-surface:      rgba(30, 20, 60, 0.85);
+  --bg-surface-hover:rgba(40, 28, 80, 0.95);
+  --bg-glass:        rgba(30, 20, 60, 0.60);
+  --bg-glass-dark:   rgba(139, 92, 246, 0.12);
+  --bg-bot-bubble:   rgba(55, 35, 100, 0.90);
+  --bg-user-bubble:  linear-gradient(135deg, var(--color-primary-600), var(--color-primary-800));
+  --bg-input:        rgba(30, 20, 60, 0.90);
+  --bg-navbar:       rgba(15, 10, 30, 0.90);
+
+  --text-primary:    #f1eeff;
+  --text-secondary:  #c4b5fd;
+  --text-muted:      #7c6faa;
+  --text-on-primary: #ffffff;
+  --text-bot:        #e8e0ff;
+  --text-user:       #ffffff;
+
+  --border-color:    rgba(139, 92, 246, 0.25);
+  --border-color-focus: var(--color-primary-400);
+
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.40), 0 2px 6px rgba(0,0,0,0.20);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,0.50), 0 4px 12px rgba(0,0,0,0.25);
+  --shadow-glow:0 0 24px rgba(139, 92, 246, 0.40);
+}
+
+/* ── Reduced motion (accessibility) ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Reset ────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar styling ────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-300);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary-400); }
+
+/* ── Global animated background ──────────────────────────── */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-page);
+  overflow: hidden;
+}
+
+.page-bg::before,
+.page-bg::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  animation: float-orb 12s ease-in-out infinite alternate;
+}
+
+.page-bg::before {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--color-primary-400), var(--color-primary-600));
+  top: -200px;
+  right: -100px;
+}
+
+.page-bg::after {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--color-teal-400), var(--color-primary-500));
+  bottom: -100px;
+  left: -100px;
+  animation-delay: -6s;
+}
+
+[data-theme="dark"] .page-bg::before { opacity: 0.20; }
+[data-theme="dark"] .page-bg::after  { opacity: 0.15; }
+
+@keyframes float-orb {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, -40px) scale(1.1); }
+}
+
+/* ── Glass card utility ───────────────────────────────────── */
+.glass-card {
+  background: var(--bg-glass);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Button utilities ─────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+  color: #ffffff;
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.35);
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.50);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.30);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.btn-ghost:hover {
+  background: var(--bg-glass-dark);
+  color: var(--text-primary);
+  border-color: var(--color-primary-300);
+}
+
+/* ── Input utilities ──────────────────────────────────────── */
+.input-field {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.input-field::placeholder { color: var(--text-muted); }
+
+.input-field:focus {
+  border-color: var(--border-color-focus);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* ── Label utility ────────────────────────────────────────── */
+.input-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+/* ── Emotion colour helper ────────────────────────────────── */
+.emotion-color { transition: color var(--transition-base); }
